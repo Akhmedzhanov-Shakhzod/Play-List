@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div id="Player">@{/*
+    <audio id="audioPlayer" controls loop preload="metadata">
+        <!--<source src="/audio/Нашид - Машаллах.mp3" type="audio/mpeg">
+        Your browser don`t support audio player... Update browser and try again ;) -->
+    </audio>*/}
+</div>
+
+@{/*
+<div class="Track_Block">
+    <h3>Недавно прослушено</h3>
+</div>
+*/}
+
+<!-- /*************** bootstrap from https://codepen.io/MiRaxX69/pen/PvaEaG *****************/ -->
+<!-- jade: compressed-->
+<ul class="audio-players">
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+            <div class="audio-player__title">
+                <h5>Audio  One</h5>
+                <p>cdsssssssss</p>
+
+            </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+        <div class="audio-player__title">    
+             <h5>Audio  Two</h5>
+             <p>csdddddd</p>
+        </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control js-control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+        <div class="audio-player__title">    
+            <h5>Audio  Three</h5>
+            <p>csddddddd</p>
+        </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+            <div class="audio-player__title">
+                <h5>Audio  One</h5>
+                <p>cdsssssssss</p>
+
+            </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+        <div class="audio-player__title">    
+             <h5>Audio  Two</h5>
+             <p>csdddddd</p>
+        </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control js-control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+        <div class="audio-player__title">    
+            <h5>Audio  Three</h5>
+            <p>csddddddd</p>
+        </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+            <div class="audio-player__title">
+                <h5>Audio  One</h5>
+                <p>cdsssssssss</p>
+
+            </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+        <div class="audio-player__title">    
+             <h5>Audio  Two</h5>
+             <p>csdddddd</p>
+        </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+    <li>
+        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3')" class="audio-player js-audio-player">
+            <button class="audio-player__control js-control">
+                <div class="audio-player__control-icon"></div>
+            </button>
+        <div class="audio-player__title">    
+            <h5>Audio  Three</h5>
+            <p>csddddddd</p>
+        </div>
+            <audio preload="metadata">
+                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3"/>
+            </audio>
+            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+        </div>
+    </li>
+</ul>
+
+<!-- /********************************************************************/ -->
+
