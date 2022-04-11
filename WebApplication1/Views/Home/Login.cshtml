@@ -1,0 +1,30 @@
+﻿
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!-- https://www.sliderrevolution.com/resources/bootstrap-login-form/ -->
+
+
+<form class="login-form login-form-user" id="UserLoginForm" method="post" accept-charset="utf-8">
+    <div class="control-group">
+       <input class="login-form-user-input" name="Username" required="required" placeholder="Username" maxlength="255" type="text" > 
+    </div>
+
+    <div class="control-group">
+       <input class="login-form-user-input" name="Password" required="required" placeholder="Password" minlength="8" type="password"> 
+    </div>
+
+    <div class="control-group">
+        <input asp-area="" asp-controller="Home" asp-action="Validate" class="login-form-user-input-btn btn btn-primary btn-large btn-block" type="submit" value="Sign in"> 
+    </div>
+    
+    <div class="control-group">
+        <input asp-area="" asp-controller="Home" asp-action="Registrate" class="login-form-user-input-btn btn btn-primary btn-large btn-block" type="submit" value="Sign up"> 
+    </div>
+</form>
+
+
+<!---------------------------------------------------------------------------------->
+

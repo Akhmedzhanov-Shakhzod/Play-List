@@ -1,3 +1,4 @@
+
 html {
   font-size: 14px;
 }
@@ -190,6 +191,35 @@ body {
 
 /******************************************************/
 
+/************** https://www.sliderrevolution.com/resources/bootstrap-login-form/ *******************/
+
+
+.login-form-user {
+    width: 100%;
+    padding: 15% 25%;
+}
+
+.login-form-user-input {
+    margin-top: 10px;
+    height: 45px;
+    width: 500px;
+    border: 3px solid #232324;
+    border-radius: 30px;
+}
+
+input.login-form-user-input:hover {
+    border: 1px solid #232324;
+}
+
+.login-form-user-input-btn {
+    width: 400px;
+    margin-left: 50px;
+    margin-top: 20px;
+    border: 3px solid #232324;
+    border-radius: 30px;
+}
+
+/**********************************************************/
 
 
 
