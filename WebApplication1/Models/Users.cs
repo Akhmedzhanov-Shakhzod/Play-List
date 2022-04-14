@@ -1,6 +1,5 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
 
 namespace WebApplication1.Models
 {
@@ -12,11 +11,7 @@ namespace WebApplication1.Models
         public string UserName { get; set; }
         [Required(ErrorMessage = "Required Password")]
         public string Password { get; set; }
-    }
-
-    public class EFPlayList : DbContext
-    {
-        public DbSet<Users> users { get; set; }
-
+        [Required(ErrorMessage = "Required User Access Level")]
+        public string UserAccessLevel { get; set; }
     }
 }

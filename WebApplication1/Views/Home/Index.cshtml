@@ -1,4 +1,8 @@
 ﻿
+@using WebApplication1.Controllers
+
+@model WebApplication1.DataLayer.DbPlayList
+
 
 @{
     ViewData["Title"] = "Home Page";
@@ -18,149 +22,53 @@
 </div>
 */}
 
+@if(Helper.user?.UserAccessLevel == "admin")
+{
+    <div class="btn btn-success btn-add-track">
+        <a class="text-white"  asp-area="" asp-controller="Tracks" asp-action="Index">Add Track</a>
+    </div>
+}
+
+
+<div class="search-menu">
+    <div>
+        <label>order by</label>
+        <select>
+            <option>Track name</option>
+            <option>Artist</option>
+        </select>
+    </div>
+    <div>
+        <input type="text" placeholder="search"/>
+        <input class="btn btn-primary type="submit" value="search"/>
+    </div>
+</div>
+
 <!-- /*************** bootstrap from https://codepen.io/MiRaxX69/pen/PvaEaG *****************/ -->
 <!-- jade: compressed-->
-<ul class="audio-players">
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3')" class="audio-player js-audio-player">
+
+@if(@Model.tracks != null)
+{
+ <ul class="audio-players">
+    @foreach (var @track in @Model.tracks)
+    {
+     <li>
+        <div onclick="playAudio('@{@track.Audio}')" class="audio-player js-audio-player">
             <button class="audio-player__control">
                 <div class="audio-player__control-icon"></div>
             </button>
             <div class="audio-player__title">
-                <h5>Audio  One</h5>
-                <p>cdsssssssss</p>
+                <h5>@track.Artist</h5>
+                <p>@track.TrackName</p>
 
             </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
+            <img src="@track.Picture"/>
         </div>
-    </li>
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3')" class="audio-player js-audio-player">
-            <button class="audio-player__control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-        <div class="audio-player__title">    
-             <h5>Audio  Two</h5>
-             <p>csdddddd</p>
-        </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
-        </div>
-    </li>
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3')" class="audio-player js-audio-player">
-            <button class="audio-player__control js-control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-        <div class="audio-player__title">    
-            <h5>Audio  Three</h5>
-            <p>csddddddd</p>
-        </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
-        </div>
-    </li>
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3')" class="audio-player js-audio-player">
-            <button class="audio-player__control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-            <div class="audio-player__title">
-                <h5>Audio  One</h5>
-                <p>cdsssssssss</p>
-
-            </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
-        </div>
-    </li>
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3')" class="audio-player js-audio-player">
-            <button class="audio-player__control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-        <div class="audio-player__title">    
-             <h5>Audio  Two</h5>
-             <p>csdddddd</p>
-        </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
-        </div>
-    </li>
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3')" class="audio-player js-audio-player">
-            <button class="audio-player__control js-control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-        <div class="audio-player__title">    
-            <h5>Audio  Three</h5>
-            <p>csddddddd</p>
-        </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
-        </div>
-    </li>
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3')" class="audio-player js-audio-player">
-            <button class="audio-player__control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-            <div class="audio-player__title">
-                <h5>Audio  One</h5>
-                <p>cdsssssssss</p>
-
-            </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/07%20Que%20la%20fafa.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
-        </div>
-    </li>
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3')" class="audio-player js-audio-player">
-            <button class="audio-player__control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-        <div class="audio-player__title">    
-             <h5>Audio  Two</h5>
-             <p>csdddddd</p>
-        </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/11%20My%20love.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
-        </div>
-    </li>
-    <li>
-        <div onclick="playAudio('http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3')" class="audio-player js-audio-player">
-            <button class="audio-player__control js-control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-        <div class="audio-player__title">    
-            <h5>Audio  Three</h5>
-            <p>csddddddd</p>
-        </div>
-            <audio preload="metadata">
-                <source src="http://www.zikrap.com/music/RAP%20FRAN%C3%87AISE/F430%20Thank%20You%20God/15%20Every%20Night.mp3"/>
-            </audio>
-            <img src="https://previews.123rf.com/images/alexwhite/alexwhite1603/alexwhite160302573/53462645-mp3-black-and-red-glossy-internet-icon-on-black-background.jpg"/>
-        </div>
-    </li>
+    </li>   
+    }
 </ul>
-
+   
+}
 <!-- /********************************************************************/ -->
 
 

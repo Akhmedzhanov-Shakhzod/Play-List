@@ -19,6 +19,10 @@ audio {
     border-radius: 30px;
 }
 
+a{
+    text-decoration: none;
+}
+
 audio::-webkit-media-controls-panel {
     background-color: #41464b;
 }
@@ -199,7 +203,11 @@ body {
     padding: 15% 25%;
 }
 
-.login-form-user-input {
+.login-form-user p, .form-add-track p{
+    width: 500px;
+}
+
+.login-form-user-input{
     margin-top: 10px;
     height: 45px;
     width: 500px;
@@ -207,7 +215,7 @@ body {
     border-radius: 30px;
 }
 
-input.login-form-user-input:hover {
+input.login-form-user-input:hover{
     border: 1px solid #232324;
 }
 
@@ -221,6 +229,36 @@ input.login-form-user-input:hover {
 
 /**********************************************************/
 
+.form-add-track {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 5% 5%;
+}
 
+.form-add-track input {
+    width: 500px;
+    margin-bottom: 3%;
+    height: 35px;
+}
 
+input.uplod-btn {
+    width: 100px;
+    border: 3px solid #232324;
+    border-radius: 30px;
+}
+
+.btn-add-track {
+    display: block;
+    float: right;
+    margin: 3% 3% 0 0;
+}
+
+.search-menu {
+    padding-top: 3%;
+    padding-bottom: 3%;
+
+    display:flex;
+    justify-content: space-around;
+}
 

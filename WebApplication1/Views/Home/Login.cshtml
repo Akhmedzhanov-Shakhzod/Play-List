@@ -1,4 +1,5 @@
 ﻿
+@model string
 
 @{
     ViewData["Title"] = "Login";
@@ -8,12 +9,30 @@
 
 
 <form class="login-form login-form-user" id="UserLoginForm" method="post" accept-charset="utf-8">
+
+    @if(@Model != null)
+    {
+        @using WebApplication1.Controllers
+        @if(@Model == Helper.Errors.UserNotExist || @Model == Helper.Errors.PassworInCorrect)
+        {
+            <p class="text-danger text-center">@Model</p>
+        }
+        else
+        {
+            <p>Пользователь под именем <strong class="text-danger">@Model</strong> уже существует, если это вы то заходите нажимая кнопку <strong class="text-success"><i>Sign in</i></strong> или придумайье новое имя пользователя</p>     
+        }
+    }
+
     <div class="control-group">
-       <input class="login-form-user-input" name="Username" required="required" placeholder="Username" maxlength="255" type="text" > 
+       <input class="login-form-user-input" name="UserName" required="required" placeholder="Username" maxlength="255" type="text" > 
     </div>
 
     <div class="control-group">
        <input class="login-form-user-input" name="Password" required="required" placeholder="Password" minlength="8" type="password"> 
+    </div>
+
+    <div class="control-group">
+       <input class="login-form-user-input" name="UserAccessLevel" placeholder="Admin access Level PIN *fill in when registering" type="password"> 
     </div>
 
     <div class="control-group">

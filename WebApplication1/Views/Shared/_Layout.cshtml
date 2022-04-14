@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿
+@using WebApplication1.Controllers
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,6 +15,13 @@
     <header>
         <nav class="bg-black Fixed_Panel">
              <div class="Fixed_Panel_Menu">
+                @if(Helper.user != null)
+                {
+                <div>
+                    <a class="" asp-area="" asp-controller="Home" asp-action="Login">@Helper.user?.UserName</a>
+                </div>
+                }
+
                 <div>
                     <a class="" asp-area="" asp-controller="Home" asp-action="Index">Главное</a>
                 </div>
@@ -30,9 +40,12 @@
                 <div>
                     <a class="" asp-area="" asp-controller="" asp-action="">Любимые треки</a>
                 </div>
+                @if(Helper.user == null)
+                {
                 <div>
-                    <a class="" asp-area="" asp-controller="" asp-action="">USER</a>
+                    <a class="" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
                 </div>
+                }
             </div>
         </nav>
     </header>

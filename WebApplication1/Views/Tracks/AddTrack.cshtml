@@ -1,0 +1,29 @@
+﻿@using WebApplication1.Controllers
+
+@model string
+
+@{
+    ViewData["Title"] = "Add Track";
+}
+
+
+<form class="form-add-track" method="post" enctype="multipart/form-data" asp-controller="Tracks" asp-action="AddTrack">
+
+    @if(@Model == Helper.Errors.TrackAlreadyExist)
+    {
+        <p class="text-danger">@Model</p>
+    }
+
+    <label>Artist</label>
+    <input class="w-25" required type="text" name="Artist"/>
+
+    <label>upload audio</label>
+    <input required name="files" type="file" multiple/>
+    
+    <label>upload picture it`s not required*</label>
+    <input name="files" type="file" multiple/>
+
+    <input class="uplod-btn btn-primary btn-large" type="submit" value="Upload" />
+
+</form>
+

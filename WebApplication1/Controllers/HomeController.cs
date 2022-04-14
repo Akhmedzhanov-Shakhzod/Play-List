@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WebApplication1.DataLayer;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -6,8 +9,11 @@ namespace WebApplication1.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DbPlayList _context;
+
+        public HomeController(ILogger<HomeController> logger,DbPlayList context)
         {
+            _context = context;
             _logger = logger;
         }
 
@@ -15,22 +21,69 @@ namespace WebApplication1.Controllers
         {
             return View();
         }
-        public IActionResult Validate()
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registrate()
         {
+            Users user = new Users()
+            {
+                UserName = Request.Form["UserName"],
+                Password =  Request.Form["Password"],
+                UserAccessLevel = Request.Form["UserAccessLevel"]
+            };
 
-            var userName = Request.Form["Username"];
-            var password = Request.Form["Password"];
-
-
-            return View("Index");
+            if (ModelState.IsValid)
+            {
+                var userindb = await _context.users.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+             
+                if (userindb == null)
+                {
+                    user.UserAccessLevel = Helper.ValidateAdmin(user.UserAccessLevel) ? "admin" : "user";
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    Helper.user = user;
+                    return View("Index", _context);
+                }
+                else
+                {
+                    return View("Login",userindb.UserName);
+                }
+            }
+            return RedirectToAction("Login");
         }
-        public IActionResult Registrate()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Validate()
         {
-            return View("Index");
+            Users user = new Users()
+            {
+                UserName = Request.Form["UserName"],
+                Password =  Request.Form["Password"],
+            };
+
+            if (ModelState.IsValid)
+            {
+                var userindb = await _context.users.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+                
+                if(userindb == null)
+                {
+                    return View("Login", Helper.Errors.UserNotExist);
+                }
+                else
+                {
+                    if(userindb.Password != user.Password) return View("Login", Helper.Errors.PassworInCorrect);
+
+                    user.UserAccessLevel = userindb.UserAccessLevel;
+                    Helper.user = user;
+                    return View("Index", _context);
+                }
+            }
+            return RedirectToAction("Login");
         }
         public IActionResult Index()
         {
-            return View();
+            return View("Index",_context);
         }
 
         public IActionResult Privacy()
