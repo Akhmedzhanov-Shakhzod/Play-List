@@ -1,7 +1,8 @@
 ﻿
 @using WebApplication1.Controllers
+@using WebApplication1.Models
 
-@model WebApplication1.DataLayer.DbPlayList
+@model IQueryable<Tracks>
 
 
 @{
@@ -32,27 +33,32 @@
 
 <div class="search-menu">
     <div>
-        <label>order by</label>
-        <select>
-            <option>Track name</option>
-            <option>Artist</option>
-        </select>
+        <form  method="post">
+            <select name="searchId">
+                <option value="1">Track name</option>
+                <option value="2">Artist</option>
+                <option value="3">Most popular</option>
+            </select>
+            <input asp-area="" asp-controller="Home" asp-action="OrderBy" type="submit" class="btn btn-primary" value="order by"/>
+       </form>
     </div>
     <div>
-        <input type="text" placeholder="search"/>
-        <input class="btn btn-primary type="submit" value="search"/>
+        <form  method="post">
+            <input name="searchString" id="elastic" type="text" placeholder="search"/>
+            <input asp-area="" asp-controller="Home" asp-action="Search" type="submit" hidden/>
+        </form>
     </div>
 </div>
 
 <!-- /*************** bootstrap from https://codepen.io/MiRaxX69/pen/PvaEaG *****************/ -->
 <!-- jade: compressed-->
 
-@if(@Model.tracks != null)
+@if(@Model != null)
 {
  <ul class="audio-players">
-    @foreach (var @track in @Model.tracks)
+    @foreach (var @track in @Model)
     {
-     <li>
+     <li class="elastic">
         <div onclick="playAudio('@{@track.Audio}')" class="audio-player js-audio-player">
             <button class="audio-player__control">
                 <div class="audio-player__control-icon"></div>
@@ -60,7 +66,6 @@
             <div class="audio-player__title">
                 <h5>@track.Artist</h5>
                 <p>@track.TrackName</p>
-
             </div>
             <img src="@track.Picture"/>
         </div>
