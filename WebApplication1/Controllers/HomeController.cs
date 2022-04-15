@@ -22,6 +22,12 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        public IActionResult LogOut()
+        {
+            Helper.user = null;
+            return RedirectToAction("Login");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registrate()

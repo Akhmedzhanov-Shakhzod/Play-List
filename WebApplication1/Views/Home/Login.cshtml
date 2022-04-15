@@ -23,25 +23,36 @@
         }
     }
 
-    <div class="control-group">
-       <input class="login-form-user-input" name="UserName" required="required" placeholder="Username" maxlength="255" type="text" > 
-    </div>
+    @if(Helper.user == null)
+    {
+        <div class="control-group">
+           <input class="login-form-user-input" name="UserName" required="required" placeholder="Username" maxlength="255" type="text" value="" > 
+        </div>
 
-    <div class="control-group">
-       <input class="login-form-user-input" name="Password" required="required" placeholder="Password" minlength="8" type="password"> 
-    </div>
+        <div class="control-group">
+           <input class="login-form-user-input" name="Password" required="required" placeholder="Password" minlength="8" type="password"> 
+        </div>
 
-    <div class="control-group">
-       <input class="login-form-user-input" name="UserAccessLevel" placeholder="Admin access Level PIN *fill in when registering" type="password"> 
-    </div>
+        <div class="control-group">
+           <input class="login-form-user-input" name="UserAccessLevel" placeholder="Admin access Level PIN *fill in when registering" type="password"> 
+        </div>
 
-    <div class="control-group">
-        <input asp-area="" asp-controller="Home" asp-action="Validate" class="login-form-user-input-btn btn btn-primary btn-large btn-block" type="submit" value="Sign in"> 
-    </div>
+        <div class="control-group">
+            <input asp-area="" asp-controller="Home" asp-action="Validate" class="login-form-user-input-btn btn btn-primary btn-large btn-block" type="submit" value="Sign in"> 
+        </div>
     
-    <div class="control-group">
-        <input asp-area="" asp-controller="Home" asp-action="Registrate" class="login-form-user-input-btn btn btn-primary btn-large btn-block" type="submit" value="Sign up"> 
-    </div>
+        <div class="control-group">
+            <input asp-area="" asp-controller="Home" asp-action="Registrate" class="login-form-user-input-btn btn btn-primary btn-large btn-block" type="submit" value="Sign up"> 
+        </div>
+    }
+    else
+    {
+        <p class="text-center">@Helper.user.UserName</p>
+        <p class="text-center">You are an @Helper.user.UserAccessLevel</p>
+        <div class="control-group">
+            <input asp-area="" asp-controller="Home" asp-action="LogOut" class="login-form-user-input-btn btn btn-danger btn-large btn-block" type="submit" value="Log out"> 
+        </div>
+    }
 </form>
 
 

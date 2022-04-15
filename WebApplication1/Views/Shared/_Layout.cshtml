@@ -18,7 +18,7 @@
                 @if(Helper.user != null)
                 {
                 <div>
-                    <a class="" asp-area="" asp-controller="Home" asp-action="Login">@Helper.user?.UserName</a>
+                    <a class="" asp-area="" asp-controller="Home" asp-action="Login">@Helper.user?.UserName - @Helper.user?.UserAccessLevel</a>
                 </div>
                 }
 
