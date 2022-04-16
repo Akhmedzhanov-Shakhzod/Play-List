@@ -3,8 +3,8 @@
 
 // Write your JavaScript code.
 
-
-
+/*
+document.getElementById("play")
 function playAudio(src) {
 	//document.write(path);
 
@@ -17,8 +17,7 @@ function playAudio(src) {
 	document.getElementById('Player').appendChild(sound);
 	document.getElementById('Player').style.visibility = 'visible';
 }
-
-
+*/
 
 
 /*

@@ -10,11 +10,11 @@
 }
 
 
-<div id="Player">@{/*
-    <audio id="audioPlayer" controls loop preload="metadata">
-        <!--<source src="/audio/Нашид - Машаллах.mp3" type="audio/mpeg">
-        Your browser don`t support audio player... Update browser and try again ;) -->
-    </audio>*/}
+<div id="Player">
+    <audio id="audioPlayer" controls autoplay loop preload="metadata">
+        <source src="@Helper.player" type="audio/mpeg" />
+        Your browser don`t support audio player... Update browser and try again ;) 
+    </audio>
 </div>
 
 @{/*
@@ -59,15 +59,17 @@
     @foreach (var @track in @Model)
     {
      <li class="elastic">
-        <div onclick="playAudio('@{@track.Audio}')" class="audio-player js-audio-player">
-            <button class="audio-player__control">
-                <div class="audio-player__control-icon"></div>
-            </button>
+        <div class="audio-player js-audio-player play">
+            <form method="post">
+                <button type="submit" asp-controller="Home" asp-action="Player" asp-route-scr="@track.Audio" class="audio-player__control">
+                    <div class="audio-player__control-icon"></div>
+                </button>
+            </form>
             <div class="audio-player__title">
                 <h5>@track.Artist</h5>
                 <p>@track.TrackName</p>
             </div>
-            <img src="@track.Picture"/>
+            <button class="player-a"><img src="@track.Picture"/></button>
         </div>
     </li>   
     }

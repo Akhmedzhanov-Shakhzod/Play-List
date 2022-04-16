@@ -16,5 +16,6 @@ namespace WebApplication1.Controllers
             return accesslevel == "ordinary";
         }
         public static Users? user { get; set; }
+        public static string? player { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 using WebApplication1.DataLayer;
 using WebApplication1.Models;
 
@@ -52,6 +53,8 @@ namespace WebApplication1.Controllers
                     _context.Add(user);
                     await _context.SaveChangesAsync();
                     Helper.user = user;
+
+                    Helper.player = "";
                     return View("Index", tracks);
                 }
                 else
@@ -89,6 +92,7 @@ namespace WebApplication1.Controllers
 
                     user.UserAccessLevel = userindb.UserAccessLevel;
                     Helper.user = user;
+                    Helper.player = "";
                     return View("Index", tracks);
                 }
             }
@@ -113,7 +117,7 @@ namespace WebApplication1.Controllers
                     tracks = tracks.OrderBy(u => u.Listens);
                     break;
             }
-
+            Helper.player = "";
             return View("Index", tracks);
         }
 
@@ -128,10 +132,25 @@ namespace WebApplication1.Controllers
                 tracks = tracks.Where(s => s.Artist.Contains(searchString) || s.TrackName.Contains(searchString));
             }
 
+            Helper.player = "";
+            return View("Index", tracks);
+        }
+
+        public IActionResult Player(string scr)
+        {
+            //var result = "<source src = \"";
+            //result += scr;
+            //result += "\" type = \"audio/mpeg\">";
+            Helper.player = scr;
+
+            var tracks = from u in _context.tracks
+                         select u;
+            tracks = tracks.OrderByDescending(u => u);
             return View("Index", tracks);
         }
         public IActionResult Index()
         {
+            Helper.player = "";
             var tracks = from u in _context.tracks
                          select u;
             tracks = tracks.OrderByDescending(u => u);
