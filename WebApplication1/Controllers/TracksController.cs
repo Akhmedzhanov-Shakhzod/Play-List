@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataLayer;
 using WebApplication1.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebApplication1.Controllers
 {
@@ -47,12 +48,13 @@ namespace WebApplication1.Controllers
 
                 if (files.Count > 1)
                 {
-                    string pathpicture = "wwwroot/files/pictures/" + files[1].FileName;
+                    string pathpicture = Path.Combine("wwwroot/files/pictures", files[1].FileName);
+
                     using (var fileStream = new FileStream(pathpicture, FileMode.Create))
                     {
-                        await files[0].CopyToAsync(fileStream);
+                        await files[1].CopyToAsync(fileStream);
                     }
-                    pathpicture = "/files/pictures/" + files[1].FileName;
+                    pathpicture = Path.Combine("/files/pictures", files[1].FileName);
                     track.Picture = pathpicture;
                 }
                 else
@@ -64,7 +66,12 @@ namespace WebApplication1.Controllers
                 _context.tracks.Add(track);
                 await _context.SaveChangesAsync();
 
-                return View("Views/Home/Index.cshtml",_context);
+                Helper.player = "";
+                var tracks = from u in _context.tracks
+                             select u;
+                tracks = tracks.OrderByDescending(u => u);
+
+                return View("Views/Home/Index.cshtml",tracks);
 
                 //string sss = "";
                 //await using (var ms = new MemoryStream())

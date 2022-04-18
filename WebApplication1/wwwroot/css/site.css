@@ -78,6 +78,7 @@ body {
     z-index: 50;
     bottom: 0;
     background-color: #232324;
+    /*background-color: white;*/
     /*visibility: hidden;*/
 }
 
@@ -107,8 +108,10 @@ body {
     border:none;
     display:inline-block;
     margin: 15px;
+    padding: 0;
     width: 80%;
     height: 225px;
+    z-index: 50;
 }
 
 .audio-player img {
@@ -204,6 +207,20 @@ body {
 
 /************** https://www.sliderrevolution.com/resources/bootstrap-login-form/ *******************/
 
+.saved {
+    display: inline-block;
+    cursor: pointer;
+}
+.saved-div {
+    width:112%;
+    margin-left: -6%;
+    display:flex;
+    justify-content:space-between;
+}
+
+.saved-margin {
+    margin-left:100%;
+}
 
 .login-form-user {
     width: 100%;
@@ -288,7 +305,14 @@ input.uplod-btn {
     border: none;
 }
 
-hide {
+.hide {
     display: none;
 }
+
+.center {
+    text-align:center;
+    width: 90%;
+}
+
+
 

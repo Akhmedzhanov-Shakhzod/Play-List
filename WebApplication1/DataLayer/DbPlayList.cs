@@ -11,5 +11,7 @@ namespace WebApplication1.DataLayer
         }
         public DbSet<Users> users { get; set; } 
         public DbSet<Tracks> tracks { get; set; } 
+        public DbSet<SavedTracks> savedTracks { get; set; }
+        public DbSet<ResentlyPlayed> resentlyPlayeds { get; set; }
     }
 }

@@ -46,16 +46,26 @@ namespace WebApplication1.Controllers
              
                 if (userindb == null)
                 {
-                    var tracks = from u in _context.tracks
-                                 select u;
-                    tracks = tracks.OrderByDescending(u => u);
                     user.UserAccessLevel = Helper.ValidateAdmin(user.UserAccessLevel) ? "admin" : "user";
-                    _context.Add(user);
+
+                    _context.users.Add(user);
                     await _context.SaveChangesAsync();
                     Helper.user = user;
 
                     Helper.player = "";
-                    return View("Index", tracks);
+
+                    IQueryable<Tracks>[] tracks = new IQueryable<Tracks>[2];
+
+                    tracks[0] = (from t in _context.tracks
+                                 select t).OrderByDescending(t => t.Listens).Take(4);
+                    if (Helper.user != null)
+                    {
+                        tracks[1] = (from t in _context.tracks
+                                     join p in _context.resentlyPlayeds on t.TrackId equals p.TrackId
+                                     where (p.UserId == Helper.user.UserID)
+                                     select t).OrderByDescending(t => t).Take(4);
+                    }
+                    return View("/Views/Main/Main.cshtml", tracks);
                 }
                 else
                 {
@@ -68,15 +78,13 @@ namespace WebApplication1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Validate()
         {
-            Users user = new Users()
-            {
-                UserName = Request.Form["UserName"],
-                Password =  Request.Form["Password"],
-            };
+         
+            string UserName = Request.Form["UserName"];
+            string Password =  Request.Form["Password"];
 
             if (ModelState.IsValid)
             {
-                var userindb = await _context.users.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+                var userindb = await _context.users.FirstOrDefaultAsync(u => u.UserName == UserName);
                 
                 if(userindb == null)
                 {
@@ -84,16 +92,23 @@ namespace WebApplication1.Controllers
                 }
                 else
                 {
-                    if(userindb.Password != user.Password) return View("Login", Helper.Errors.PassworInCorrect);
+                    if(userindb.Password != Password) return View("Login", Helper.Errors.PassworInCorrect);
 
-                    var tracks = from u in _context.tracks
-                                 select u;
-                    tracks = tracks.OrderByDescending(u => u);
-
-                    user.UserAccessLevel = userindb.UserAccessLevel;
-                    Helper.user = user;
+                    Helper.user = userindb;
                     Helper.player = "";
-                    return View("Index", tracks);
+
+                    IQueryable<Tracks>[] tracks = new IQueryable<Tracks>[2];
+
+                    tracks[0] = (from t in _context.tracks
+                                 select t).OrderByDescending(t => t.Listens).Take(4);
+                    if (Helper.user != null)
+                    {
+                        tracks[1] = (from t in _context.tracks
+                                     join p in _context.resentlyPlayeds on t.TrackId equals p.TrackId
+                                     where (p.UserId == Helper.user.UserID)
+                                     select t).OrderByDescending(t => t).Take(4);
+                    }
+                    return View("/Views/Main/Main.cshtml", tracks);
                 }
             }
             return RedirectToAction("Login");
@@ -114,7 +129,7 @@ namespace WebApplication1.Controllers
                     tracks = tracks.OrderBy(u => u.Artist);
                     break ;
                 case "3":
-                    tracks = tracks.OrderBy(u => u.Listens);
+                    tracks = tracks.OrderByDescending(u => u.Listens);
                     break;
             }
             Helper.player = "";
@@ -136,7 +151,7 @@ namespace WebApplication1.Controllers
             return View("Index", tracks);
         }
 
-        public IActionResult Player(string scr)
+        public async Task<IActionResult> Player(string scr,int id)
         {
             //var result = "<source src = \"";
             //result += scr;
@@ -146,6 +161,61 @@ namespace WebApplication1.Controllers
             var tracks = from u in _context.tracks
                          select u;
             tracks = tracks.OrderByDescending(u => u);
+
+            var track = await _context.tracks.FindAsync(id);
+
+            track.Listens += 1;
+
+            try
+            {
+                _context.tracks.Update(track);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return View("Index", tracks);
+        }
+
+        public async Task<IActionResult> Saved(int id)
+        {
+            var savedtrack = _context.savedTracks.FirstOrDefault(s => s.TrackId == id);
+
+            var tracks = from u in _context.tracks
+                         select u;
+            tracks = tracks.OrderByDescending(u => u);
+
+            if (savedtrack != null)
+            {
+                if(savedtrack.UserId == Helper.user.UserID) return View("Index", tracks);
+            }
+            SavedTracks saved = new SavedTracks()
+            {
+                UserId = Helper.user.UserID,
+                TrackId = id
+            };
+            _context.savedTracks.Add(saved);
+            await _context.SaveChangesAsync();
+            
+            return View("Index", tracks);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var tracks = from u in _context.tracks
+                         select u;
+            tracks = tracks.OrderByDescending(u => u);
+
+            var track = _context.tracks.FirstOrDefault(s => s.TrackId == id);
+            
+            if (track != null)
+            {
+                _context.tracks.Remove(track);
+                await _context.SaveChangesAsync();
+            }
+
             return View("Index", tracks);
         }
         public IActionResult Index()

@@ -23,10 +23,10 @@
                 }
 
                 <div>
-                    <a class="" asp-area="" asp-controller="Home" asp-action="Index">Главное</a>
+                    <a class="" asp-area="" asp-controller="Main" asp-action="Index">Главное</a>
                 </div>
                 <div>
-                    <a class="" asp-area="" asp-controller="" asp-action="">Поиск</a>
+                    <a class="" asp-area="" asp-controller="Home" asp-action="Index">Поиск</a>
                 </div>
                 <div>
                     <a class="" asp-area="" asp-controller="" asp-action="">Моя медиатека</a>
@@ -37,9 +37,12 @@
                 <div>
                     <a class="" asp-area="" asp-controller="" asp-action="">Создать плейлист</a>
                 </div>
+                @if(Helper.user != null)
+                {   
                 <div>
-                    <a class="" asp-area="" asp-controller="" asp-action="">Любимые треки</a>
+                    <a class="" asp-area="" asp-controller="Saved" asp-action="Saved">Любимые треки</a>
                 </div>
+                }
                 @if(Helper.user == null)
                 {
                 <div>
