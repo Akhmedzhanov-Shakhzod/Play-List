@@ -54,3 +54,10 @@ function insertMark(string,pos,len) {
 }
 * /
 
+
+*/
+
+$(document).ready(function () {
+	$('.multi-select').selectpicker();
+});
+

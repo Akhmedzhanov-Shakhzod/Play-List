@@ -234,7 +234,7 @@ body {
 .login-form-user-input{
     margin-top: 10px;
     height: 45px;
-    width: 500px;
+    width: 500px !important;
     border: 3px solid #232324;
     border-radius: 30px;
 }
@@ -244,7 +244,7 @@ input.login-form-user-input:hover{
 }
 
 .login-form-user-input-btn {
-    width: 400px;
+    width: 400px !important;
     margin-left: 50px;
     margin-top: 20px;
     border: 3px solid #232324;
@@ -275,7 +275,7 @@ input.uplod-btn {
 .btn-add-track {
     display: block;
     float: right;
-    margin: 3% 3% 0 0;
+    margin: 4% 4% 0 0;
 }
 
 .search-menu {
@@ -284,6 +284,10 @@ input.uplod-btn {
 
     display:flex;
     justify-content: space-around;
+}
+
+.search-menu input {
+    height: 40px;
 }
 
 .search-menu div select {
@@ -314,5 +318,68 @@ input.uplod-btn {
     width: 90%;
 }
 
+/*******************************************************************/
+
+.PlayList-Form {
+    padding-top: 3%;
+    display: grid;
+    grid-template-columns: 0.3fr 0.7fr;
+}
+
+.image-playlist {
+    width: 260px;
+    height: 260px;
+    margin: 5%;
+    background-image: url('../files/pictures/default-for-playlist.png');
+    background-size: cover;
+}
+
+.image-playlist:hover {
+    background-image: url('../files/pictures/upload.png');
+}
+
+.image-playlist input  {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.playlist-name {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.playlist-name input {
+    color: white;
+    background-color: #232324;
+    border:none;
+    width: 80%;
+    height: 30%;
+    margin: 15% 0 0 0;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 200%;
+    font-weight: bold;
+    letter-spacing: 0.3em ;
+}
+
+.playlist-name label {
+    font-family:'Times New Roman', Times, serif;
+    font-size: 120%;
+}
+
+.PlayList-Form button {
+    margin-top: 5%;
+    margin-left: 70%;
+    width: 10%;
+}
+
+
+.dropdown, .dropend, .dropstart, .dropup {
+    position: relative;
+    width: 240% !important;
+    margin-left: -163% !important;
+}
 
 

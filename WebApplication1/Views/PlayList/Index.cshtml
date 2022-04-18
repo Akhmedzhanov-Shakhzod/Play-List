@@ -1,0 +1,26 @@
+﻿@using WebApplication1.Controllers
+
+
+@{
+    ViewData["Title"] = "Play list";
+}
+
+<div class="container">
+    <form class="PlayList-Form" method="post">
+        <div class="image-playlist">
+            <input name="Image" type="file" />
+        </div>
+        <div class="playlist-name">
+            <input name="Name" type="text" value= "My play list №" />
+            <!--<label>@{/*Helper.user.UserName*/}</label>-->
+            <label>User name</label>
+        </div>
+
+        <select name="Tracks" class="multi-select" multiple data-selected-text-format="count > 2">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+        <button class="btn btn-success" type="submit">Create</button>
+    </form>
+</div>

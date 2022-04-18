@@ -7,6 +7,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MyProgramPlayList</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css"/>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
@@ -17,9 +21,9 @@
              <div class="Fixed_Panel_Menu">
                 @if(Helper.user != null)
                 {
-                <div>
-                    <a class="" asp-area="" asp-controller="Home" asp-action="Login">@Helper.user?.UserName - @Helper.user?.UserAccessLevel</a>
-                </div>
+                    <div>
+                        <a class="" asp-area="" asp-controller="Home" asp-action="Login">@Helper.user?.UserName - @Helper.user?.UserAccessLevel</a>
+                    </div>
                 }
 
                 <div>
@@ -28,26 +32,31 @@
                 <div>
                     <a class="" asp-area="" asp-controller="Home" asp-action="Index">Поиск</a>
                 </div>
-                <div>
-                    <a class="" asp-area="" asp-controller="" asp-action="">Моя медиатека</a>
-                </div>
-                <div>
 
-                </div>
-                <div>
-                    <a class="" asp-area="" asp-controller="" asp-action="">Создать плейлист</a>
-                </div>
                 @if(Helper.user != null)
                 {   
-                <div>
-                    <a class="" asp-area="" asp-controller="Saved" asp-action="Saved">Любимые треки</a>
-                </div>
+                    <div>
+                        <a class="" asp-area="" asp-controller="" asp-action="">Моя медиатека</a>
+                    </div>
+                    <div>
+
+                    </div>
+                    <div>
+                        <a class="" asp-area="" asp-controller="PlayList" asp-action="Index">Создать плейлист</a>
+                    </div>
+                    <div>
+                        <a class="" asp-area="" asp-controller="Saved" asp-action="Saved">Любимые треки</a>
+                    </div>
                 }
                 @if(Helper.user == null)
                 {
-                <div>
-                    <a class="" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                </div>
+                    <div>
+                        <a class="" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                    </div>
+
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 }
             </div>
         </nav>
@@ -63,6 +72,10 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

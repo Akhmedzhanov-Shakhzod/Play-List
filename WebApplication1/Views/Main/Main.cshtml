@@ -17,7 +17,7 @@
 </div>
 
 
-@if(@Model[1] != null && @Helper.user != null)
+@if(@Model[1]?.Count() > 0)
 {
     <div>
        <h3 class="center">Recently played</h3>
