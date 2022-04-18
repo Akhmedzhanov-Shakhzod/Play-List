@@ -1,0 +1,73 @@
+﻿
+@using WebApplication1.Controllers
+@using WebApplication1.Models
+
+@model IQueryable<Tracks>[]
+
+
+@{
+    ViewData["Title"] = "Main";
+}
+
+<div id="Player">
+    <audio id="audioPlayer" controls autoplay loop preload="metadata">
+        <source src="@Helper.player" type="audio/mpeg" />
+        Your browser don`t support audio player... Update browser and try again ;) 
+    </audio>
+</div>
+
+
+@if(@Model[1] != null && @Helper.user != null)
+{
+    <div>
+       <h3 class="center">Recently played</h3>
+       <ul class="audio-players">
+            @foreach (var @track in @Model[1])
+            {
+            <li>
+                <div class="audio-player js-audio-player play">
+                    <form method="post">
+                        <button type="submit" asp-controller="Main" asp-action="Player" asp-route-scr="@track.Audio" asp-route-id="@track.TrackId" class="audio-player__control">
+                            <div class="audio-player__control-icon"></div>
+                        </button>
+                    </form>
+                    <div class="audio-player__title">
+                        <h5>@track.Artist</h5>
+                        <p>@track.TrackName</p>
+                    </div>
+                    <button class="player-a"><img src="@track.Picture"/></button>
+                </div>
+            </li>
+            }
+       </ul>
+    </div>
+}
+
+@if(@Model != null)
+{
+    <div>
+        <h3 class="center">Top 4 most popular tracks</h3>
+        <ul class="audio-players">
+            @foreach (var @track in @Model[0])
+            {
+            <li>
+                <div class="audio-player js-audio-player play">
+                    <form method="post">
+                        <button type="submit" asp-controller="Main" asp-action="Player" asp-route-scr="@track.Audio" asp-route-id="@track.TrackId" class="audio-player__control">
+                            <div class="audio-player__control-icon"></div>
+                        </button>
+                    </form>
+                    <div class="audio-player__title">
+                        <h5>@track.Artist</h5>
+                        <p>@track.TrackName</p>
+                    </div>
+                    <button class="player-a"><img src="@track.Picture"/></button>
+                </div>
+            </li>
+            }
+       </ul>
+    </div>
+
+}
+
+
