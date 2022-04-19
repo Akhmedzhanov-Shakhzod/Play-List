@@ -9,9 +9,13 @@ namespace WebApplication1.Controllers
     {
         private readonly DbPlayList _context;
 
+
         public SavedController(DbPlayList context)
         {
             _context = context;
+
+            Helper helper = new Helper(_context);
+            Helper.playLists = helper.PlayLists();
         }
         public IActionResult Saved()
         {

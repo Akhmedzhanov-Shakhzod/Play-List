@@ -13,6 +13,9 @@ namespace WebApplication1.Controllers
         public TracksController(DbPlayList context)
         {
             _context = context;
+
+            Helper helper = new Helper(_context);
+            Helper.playLists = helper.PlayLists();
         }
 
         public IActionResult Index()

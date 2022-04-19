@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.DataLayer;
 
@@ -10,9 +11,10 @@ using WebApplication1.DataLayer;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(DbPlayList))]
-    partial class DbPlayListModelSnapshot : ModelSnapshot
+    [Migration("20220419202559_UpdatePlayListTable")]
+    partial class UpdatePlayListTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

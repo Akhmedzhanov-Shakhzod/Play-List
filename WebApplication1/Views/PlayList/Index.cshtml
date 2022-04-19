@@ -1,5 +1,8 @@
-﻿@using WebApplication1.Controllers
+﻿
+@using WebApplication1.Controllers
+@using WebApplication1.Models
 
+@model IQueryable<Tracks>
 
 @{
     ViewData["Title"] = "Play list";
@@ -11,16 +14,24 @@
             <input name="Image" type="file" />
         </div>
         <div class="playlist-name">
-            <input name="Name" type="text" value= "My play list №" />
-            <!--<label>@{/*Helper.user.UserName*/}</label>-->
-            <label>User name</label>
+            @if (Helper.isPlaylistExist)
+            {
+                <label class="text-danger">@Helper.Errors.PlayListAlreadyExist</label>
+            }
+            <input name="Name" type="text" value= "My play list № @{@Helper.countUserPlaylist}" />
+            <label>Author: @Helper.user?.UserName</label>
         </div>
 
-        <select name="Tracks" class="multi-select" multiple data-selected-text-format="count > 2">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
+        <select name="Tracks" class="multi-select" required multiple data-selected-text-format="values">
+        @if(@Model != null){
+            @foreach(var @track in @Model)
+            {
+                <option value="@track.TrackId">@track.Artist @track.TrackName</option>
+            }
+        }
         </select>
-        <button class="btn btn-success" type="submit">Create</button>
+        <button asp-controller="PlayList" asp-action="Create" class="btn btn-success" type="submit">Create</button>
     </form>
 </div>
+
+

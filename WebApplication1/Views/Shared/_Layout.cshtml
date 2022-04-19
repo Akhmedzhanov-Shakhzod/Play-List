@@ -33,7 +33,17 @@
                     <a class="" asp-area="" asp-controller="Home" asp-action="Index">Поиск</a>
                 </div>
 
-                @if(Helper.user != null)
+                @if(Helper.user == null)
+                {
+                    <div>
+                        <a class="" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                    </div>
+
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                }
+                else
                 {   
                     <div>
                         <a class="" asp-area="" asp-controller="" asp-action="">Моя медиатека</a>
@@ -48,18 +58,29 @@
                         <a class="" asp-area="" asp-controller="Saved" asp-action="Saved">Любимые треки</a>
                     </div>
                 }
-                @if(Helper.user == null)
-                {
-                    <div>
-                        <a class="" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                    </div>
+            </div>
 
-                    <div></div>
-                    <div></div>
-                    <div></div>
+            @if(Helper.user != null)
+            {
+                <hr class="w-75" />
+            }
+            <div class="Fixed_Panel_PlayLists">
+            @{
+                try
+                {
+                    @foreach(var @playlist in Helper.playLists)
+                    {
+                        <div>
+                            <a class="" asp-area="" asp-controller="" asp-action="">@playlist.Name</a>
+                        </div> 
+                    }
                 }
+                catch
+                {}
+            }
             </div>
         </nav>
+
     </header>
 
 

@@ -8,10 +8,12 @@ namespace WebApplication1.Controllers
     public class MainController : Controller
     {
         private readonly DbPlayList _context;
-
         public MainController(DbPlayList context)
         {
             _context = context;
+
+            Helper helper = new Helper(_context);
+            Helper.playLists = helper.PlayLists();
         }
         public IActionResult Index()
         {

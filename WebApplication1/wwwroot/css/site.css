@@ -52,11 +52,22 @@ body {
     position: fixed;
 }
 
+.Fixed_Panel_PlayLists {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Fixed_Panel_PlayLists a {
+    text-decoration: none;
+    color: white;
+}
+
 .Fixed_Panel_Menu {
-    display:flex;
-    height:35%;
-    flex-direction:column;
-    justify-content:space-between;
+    display: flex;
+    height: 35%;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .Fixed_Panel_Menu div a {
@@ -378,8 +389,8 @@ input.uplod-btn {
 
 .dropdown, .dropend, .dropstart, .dropup {
     position: relative;
-    width: 240% !important;
-    margin-left: -163% !important;
+    width: 850px !important;
+    margin-left: -580px !important;
 }
 
 

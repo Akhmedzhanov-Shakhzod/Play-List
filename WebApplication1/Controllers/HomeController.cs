@@ -16,6 +16,9 @@ namespace WebApplication1.Controllers
         {
             _context = context;
             _logger = logger;
+
+            Helper helper = new Helper(_context);
+            Helper.playLists = helper.PlayLists();
         }
 
         public IActionResult Login()
@@ -117,8 +120,8 @@ namespace WebApplication1.Controllers
         public IActionResult OrderBy(string searchId)
         {
 
-            var tracks = from u in _context.tracks
-                        select u;
+            var tracks = from t in _context.tracks
+                        select t;
 
             switch (searchId)
             {
@@ -139,8 +142,8 @@ namespace WebApplication1.Controllers
         public IActionResult Search(string searchString)
         {
 
-            var tracks = from u in _context.tracks
-                         select u;
+            var tracks = from t in _context.tracks
+                         select t;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -158,9 +161,9 @@ namespace WebApplication1.Controllers
             //result += "\" type = \"audio/mpeg\">";
             Helper.player = scr;
 
-            var tracks = from u in _context.tracks
-                         select u;
-            tracks = tracks.OrderByDescending(u => u);
+            var tracks = from t in _context.tracks
+                         select t;
+            tracks = tracks.OrderByDescending(t => t);
 
             var track = await _context.tracks.FindAsync(id);
 
@@ -183,9 +186,9 @@ namespace WebApplication1.Controllers
         {
             var savedtrack = _context.savedTracks.FirstOrDefault(s => s.TrackId == id);
 
-            var tracks = from u in _context.tracks
-                         select u;
-            tracks = tracks.OrderByDescending(u => u);
+            var tracks = from t in _context.tracks
+                         select t;
+            tracks = tracks.OrderByDescending(t => t);
 
             if (savedtrack != null)
             {
@@ -204,9 +207,9 @@ namespace WebApplication1.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var tracks = from u in _context.tracks
-                         select u;
-            tracks = tracks.OrderByDescending(u => u);
+            var tracks = from t in _context.tracks
+                         select t;
+            tracks = tracks.OrderByDescending(t => t);
 
             var track = _context.tracks.FirstOrDefault(s => s.TrackId == id);
             
@@ -221,9 +224,9 @@ namespace WebApplication1.Controllers
         public IActionResult Index()
         {
             Helper.player = "";
-            var tracks = from u in _context.tracks
-                         select u;
-            tracks = tracks.OrderByDescending(u => u);
+            var tracks = from t in _context.tracks
+                         select t;
+            tracks = tracks.OrderByDescending(t => t);
             return View("Index",tracks);
         }
 
