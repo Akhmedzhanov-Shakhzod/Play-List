@@ -1,0 +1,76 @@
+﻿
+@using WebApplication1.Controllers
+@using WebApplication1.Models
+
+@model (PlayList, IQueryable<Tracks>)
+
+@{
+    ViewData["Title"] = "Edit play list";
+}
+
+
+<div id="Player">
+    <audio id="audioPlayer" controls autoplay loop preload="metadata">
+        <source src="@Helper.player" type="audio/mpeg" />
+        Your browser don`t support audio player... Update browser and try again ;) 
+    </audio>
+</div>
+
+
+<form method="post" class="delete">
+    <a asp-controller="PlayList" asp-action="DeletePlayList" asp-route-playlistid="@Model.Item1.Id">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>
+    </a>
+</form>
+
+<div class="container">
+    <form class="PlayList-Form" method="post">
+        <div class="image-playlist">
+            <img src="@Model.Item1.Picture"/>
+        </div>
+        <div class="playlist-name">
+            @if (Helper.isPlaylistExist)
+            {
+                <label class="text-danger">@Helper.Errors.PlayListAlreadyExist</label>
+            }
+            <input name="Name" type="text" value= "@Model.Item1.Name" />
+            <label>Author: @Helper.user?.UserName</label>
+        </div>
+        <div></div>
+        <button asp-controller="PlayList" asp-action="Edit" asp-route-playlistid="@Model.Item1.Id" class="btn-edit btn btn-success" type="submit">Save</button>
+    </form>
+    @if(@Model.Item2 != null)
+        {
+         <ul class="audio-players">
+            @foreach (var @track in @Model.Item2)
+            {
+             <li class="elastic">      
+                <form method="post" class="saved-margin">
+                    <a asp-controller="PlayList" asp-action="Delete" asp-route-id="@track.TrackId" asp-route-playlistid="@Model.Item1.Id">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </a>
+                </form>
+                    
+                <div class="audio-player js-audio-player play">
+                    <form method="post">
+                        <button type="submit" asp-controller="PlayList" asp-action="Player" asp-route-scr="@track.Audio" asp-route-trackid="@track.TrackId" asp-route-playlistid="@Model.Item1.Id" class="audio-player__control">
+                            <div class="audio-player__control-icon"></div>
+                        </button>
+                    </form>
+                    <div class="audio-player__title">
+                        <h5>@track.Artist</h5>
+                        <p>@track.TrackName</p>
+                    </div>
+                    <button class="player-a"><img src="@track.Picture"/></button>
+                </div>
+            </li>   
+            }
+        </ul>
+       }
+</div>
+
+

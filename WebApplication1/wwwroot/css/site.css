@@ -348,6 +348,11 @@ input.uplod-btn {
 .image-playlist:hover {
     background-image: url('../files/pictures/upload.png');
 }
+.image-playlist img{
+    width: 260px;
+    height: 260px;
+    z-index: 10;
+}
 
 .image-playlist input  {
     opacity: 0;
@@ -393,4 +398,15 @@ input.uplod-btn {
     margin-left: -580px !important;
 }
 
+.btn-edit {
+    margin: 0 !important;
+    margin-left: 86% !important;
+    margin-top: -5% !important;
+}
+
+.delete {
+    position: fixed;
+    right: 3%;
+    top: 3%;
+}
 

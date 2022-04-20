@@ -71,7 +71,7 @@
                     @foreach(var @playlist in Helper.playLists)
                     {
                         <div>
-                            <a class="" asp-area="" asp-controller="" asp-action="">@playlist.Name</a>
+                            <a class="" asp-area="" asp-controller="PlayList" asp-action="EditPage" asp-route-id="@playlist.Id">@playlist.Name</a>
                         </div> 
                     }
                 }
