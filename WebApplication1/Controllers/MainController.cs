@@ -42,6 +42,11 @@ namespace WebApplication1.Controllers
 
             Helper.player = scr;
 
+            IQueryable<Tracks>[] tracks = new IQueryable<Tracks>[2];
+
+            tracks[0] = (from t in _context.tracks
+                         select t).OrderByDescending(t => t.Listens).Take(4);
+
             var track = await _context.tracks.FindAsync(id);
 
             track.Listens += 1;
@@ -72,9 +77,13 @@ namespace WebApplication1.Controllers
                         }
                     }
                 }
+                tracks[1] = (from t in _context.tracks
+                             join p in _context.resentlyPlayeds.OrderByDescending(p => p) on t.TrackId equals p.TrackId
+                             where (p.UserId == Helper.user.UserID)
+                             select t).Take(4);
             }
 
-            return View("Main", LoadMain());
+            return View("Main", tracks);
         }
     }
 }
