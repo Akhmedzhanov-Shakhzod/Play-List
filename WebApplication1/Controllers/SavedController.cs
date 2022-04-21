@@ -17,15 +17,20 @@ namespace WebApplication1.Controllers
             Helper helper = new Helper(_context);
             Helper.playLists = helper.PlayLists();
         }
-        public IActionResult Saved()
+
+        public IOrderedQueryable<Tracks> LoadSaved()
         {
-            Helper.player = "";
             var savedtracks = (from t in _context.tracks
                                join s in _context.savedTracks on t.TrackId equals s.TrackId
                                where (s.UserId == Helper.user.UserID)
                                select t).OrderByDescending(t => t);
+            return savedtracks;
+        }
+        public IActionResult Saved()
+        {
+            Helper.player = "";
 
-            return View("Saved", savedtracks);
+            return View("Saved", LoadSaved());
         }
 
         public async Task<IActionResult> UnSaved(int id)
@@ -33,29 +38,17 @@ namespace WebApplication1.Controllers
             Helper.player = "";
             var savedtrack = _context.savedTracks.FirstOrDefault(s => s.TrackId == id);
 
-            var savedtracks = (from t in _context.tracks
-                                join s in _context.savedTracks on t.TrackId equals s.TrackId
-                                where (s.UserId == Helper.user.UserID)
-                                select t).OrderByDescending(t => t);
-
             if (savedtrack != null)
             {
-
                 _context.savedTracks.Remove(savedtrack);
                 await _context.SaveChangesAsync();
             }
-            return View("Saved", savedtracks);
+            return View("Saved", LoadSaved());
         }
 
         public async Task<IActionResult> Player(string scr, int id)
         {
             Helper.player = scr;
-
-            var savedtracks = (from t in _context.tracks
-                               join s in _context.savedTracks on t.TrackId equals s.TrackId
-                               where (s.UserId == Helper.user.UserID)
-                               select t).OrderByDescending(t => t);
-
             var track = await _context.tracks.FindAsync(id);
 
             track.Listens += 1;
@@ -70,17 +63,12 @@ namespace WebApplication1.Controllers
                 throw;
             }
 
-            return View("Saved", savedtracks);
+            return View("Saved", LoadSaved());
         }
 
         public IActionResult OrderBy(string searchId)
         {
-
-            var savedtracks = (from t in _context.tracks
-                               join s in _context.savedTracks on t.TrackId equals s.TrackId
-                               where (s.UserId == Helper.user.UserID)
-                               select t).OrderByDescending(t => t);
-
+            var savedtracks = LoadSaved();
             switch (searchId)
             {
                 case "1":
@@ -100,10 +88,7 @@ namespace WebApplication1.Controllers
         public IActionResult Search(string searchString)
         {
 
-            var savedtracks = (from t in _context.tracks
-                               join s in _context.savedTracks on t.TrackId equals s.TrackId
-                               where (s.UserId == Helper.user.UserID)
-                               select t).OrderByDescending(t => t);
+            var savedtracks = LoadSaved();
 
             if (!String.IsNullOrEmpty(searchString))
             {

@@ -18,6 +18,14 @@ namespace WebApplication1.Controllers
             Helper.playLists = helper.PlayLists();
         }
 
+        public IQueryable<Tracks> LoadHomeIndex()
+        {
+            var tracks = from u in _context.tracks
+                         select u;
+            tracks = tracks.OrderByDescending(u => u);
+            return tracks;
+        }
+
         public IActionResult Index()
         {
             return View("AddTrack");
@@ -70,11 +78,9 @@ namespace WebApplication1.Controllers
                 await _context.SaveChangesAsync();
 
                 Helper.player = "";
-                var tracks = from u in _context.tracks
-                             select u;
-                tracks = tracks.OrderByDescending(u => u);
 
-                return View("Views/Home/Index.cshtml",tracks);
+
+                return View("Views/Home/Index.cshtml",LoadHomeIndex());
 
                 //string sss = "";
                 //await using (var ms = new MemoryStream())

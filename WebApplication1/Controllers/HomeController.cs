@@ -20,6 +20,30 @@ namespace WebApplication1.Controllers
             Helper.playLists = helper.PlayLists();
         }
 
+        public IQueryable<Tracks> LoadIndex()
+        {
+            var tracks = from t in _context.tracks
+                         select t;
+            tracks = tracks.OrderByDescending(t => t);
+            return tracks;
+        }
+        public IQueryable<Tracks>[] LoadMain()
+        {
+            IQueryable<Tracks>[] tracks = new IQueryable<Tracks>[2];
+
+            tracks[0] = (from t in _context.tracks
+                         select t).OrderByDescending(t => t.Listens).Take(4);
+            if (Helper.user != null)
+            {
+                tracks[1] = (from t in _context.tracks
+                             join p in _context.resentlyPlayeds on t.TrackId equals p.TrackId
+                             where (p.UserId == Helper.user.UserID)
+                             select t).OrderByDescending(t => t).Take(4);
+            }
+
+            return tracks;
+        }
+
         public IActionResult Login()
         {
             return View();
@@ -56,18 +80,7 @@ namespace WebApplication1.Controllers
 
                     Helper.player = "";
 
-                    IQueryable<Tracks>[] tracks = new IQueryable<Tracks>[2];
-
-                    tracks[0] = (from t in _context.tracks
-                                 select t).OrderByDescending(t => t.Listens).Take(4);
-                    if (Helper.user != null)
-                    {
-                        tracks[1] = (from t in _context.tracks
-                                     join p in _context.resentlyPlayeds on t.TrackId equals p.TrackId
-                                     where (p.UserId == Helper.user.UserID)
-                                     select t).OrderByDescending(t => t).Take(4);
-                    }
-                    return View("/Views/Main/Main.cshtml", tracks);
+                    return View("/Views/Main/Main.cshtml", LoadMain());
                 }
                 else
                 {
@@ -99,18 +112,7 @@ namespace WebApplication1.Controllers
                     Helper.user = userindb;
                     Helper.player = "";
 
-                    IQueryable<Tracks>[] tracks = new IQueryable<Tracks>[2];
-
-                    tracks[0] = (from t in _context.tracks
-                                 select t).OrderByDescending(t => t.Listens).Take(4);
-                    if (Helper.user != null)
-                    {
-                        tracks[1] = (from t in _context.tracks
-                                     join p in _context.resentlyPlayeds on t.TrackId equals p.TrackId
-                                     where (p.UserId == Helper.user.UserID)
-                                     select t).OrderByDescending(t => t).Take(4);
-                    }
-                    return View("/Views/Main/Main.cshtml", tracks);
+                    return View("/Views/Main/Main.cshtml", LoadMain());
                 }
             }
             return RedirectToAction("Login");
@@ -119,8 +121,7 @@ namespace WebApplication1.Controllers
         public IActionResult OrderBy(string searchId)
         {
 
-            var tracks = from t in _context.tracks
-                        select t;
+            var tracks = LoadIndex();
 
             switch (searchId)
             {
@@ -131,7 +132,7 @@ namespace WebApplication1.Controllers
                     tracks = tracks.OrderBy(u => u.Artist);
                     break ;
                 case "3":
-                    tracks = tracks.OrderByDescending(u => u.Listens);
+                    tracks = tracks.OrderBy(u => u.Listens);
                     break;
             }
             Helper.player = "";
@@ -141,8 +142,7 @@ namespace WebApplication1.Controllers
         public IActionResult Search(string searchString)
         {
 
-            var tracks = from t in _context.tracks
-                         select t;
+            var tracks = LoadIndex();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -160,10 +160,6 @@ namespace WebApplication1.Controllers
             //result += "\" type = \"audio/mpeg\">";
             Helper.player = scr;
 
-            var tracks = from t in _context.tracks
-                         select t;
-            tracks = tracks.OrderByDescending(t => t);
-
             var track = await _context.tracks.FindAsync(id);
 
             track.Listens += 1;
@@ -178,20 +174,16 @@ namespace WebApplication1.Controllers
                 throw;
             }
 
-            return View("Index", tracks);
+            return View("Index", LoadIndex());
         }
 
         public async Task<IActionResult> Saved(int id)
         {
             var savedtrack = _context.savedTracks.FirstOrDefault(s => s.TrackId == id);
 
-            var tracks = from t in _context.tracks
-                         select t;
-            tracks = tracks.OrderByDescending(t => t);
-
             if (savedtrack != null)
             {
-                if(savedtrack.UserId == Helper.user.UserID) return View("Index", tracks);
+                if(savedtrack.UserId == Helper.user.UserID) return View("Index", LoadIndex());
             }
             SavedTracks saved = new SavedTracks()
             {
@@ -201,15 +193,11 @@ namespace WebApplication1.Controllers
             _context.savedTracks.Add(saved);
             await _context.SaveChangesAsync();
             
-            return View("Index", tracks);
+            return View("Index", LoadIndex());
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var tracks = from t in _context.tracks
-                         select t;
-            tracks = tracks.OrderByDescending(t => t);
-
             var track = _context.tracks.FirstOrDefault(s => s.TrackId == id);
             
             if (track != null)
@@ -218,15 +206,12 @@ namespace WebApplication1.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return View("Index", tracks);
+            return View("Index", LoadIndex());
         }
         public IActionResult Index()
         {
             Helper.player = "";
-            var tracks = from t in _context.tracks
-                         select t;
-            tracks = tracks.OrderByDescending(t => t);
-            return View("Index",tracks);
+            return View("Index",LoadIndex());
         }
 
         public IActionResult Library()

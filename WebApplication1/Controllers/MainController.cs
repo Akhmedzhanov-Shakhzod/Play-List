@@ -15,14 +15,13 @@ namespace WebApplication1.Controllers
             Helper helper = new Helper(_context);
             Helper.playLists = helper.PlayLists();
         }
-        public IActionResult Index()
+        public IQueryable<Tracks>[] LoadMain()
         {
-            Helper.player = "";
             IQueryable<Tracks>[] tracks = new IQueryable<Tracks>[2];
 
             tracks[0] = (from t in _context.tracks
                          select t).OrderByDescending(t => t.Listens).Take(4);
-            if(Helper.user != null)
+            if (Helper.user != null)
             {
                 tracks[1] = (from t in _context.tracks
                              join p in _context.resentlyPlayeds on t.TrackId equals p.TrackId
@@ -30,17 +29,18 @@ namespace WebApplication1.Controllers
                              select t).OrderByDescending(t => t).Take(4);
             }
 
-            return View("Main",tracks);
+            return tracks;
+        }
+        public IActionResult Index()
+        {
+            Helper.player = "";
+
+            return View("Main",LoadMain());
         }
         public async Task<IActionResult> Player(string scr, int id)
         {
 
             Helper.player = scr;
-
-            IQueryable<Tracks> []tracks = new IQueryable<Tracks>[2];
-
-            tracks[0] = (from u in _context.tracks
-                         select u).OrderByDescending(u => u.Listens).Take(4);
 
             var track = await _context.tracks.FindAsync(id);
 
@@ -72,14 +72,9 @@ namespace WebApplication1.Controllers
                         }
                     }
                 }
-
-                tracks[1] = (from t in _context.tracks
-                             join p in _context.resentlyPlayeds.OrderByDescending(p => p) on t.TrackId equals p.TrackId
-                             where (p.UserId == Helper.user.UserID)
-                             select t).Take(4);
             }
 
-            return View("Main", tracks);
+            return View("Main", LoadMain());
         }
     }
 }

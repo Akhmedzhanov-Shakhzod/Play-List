@@ -20,7 +20,7 @@ namespace WebApplication1.Controllers
             Helper.playLists = helper.PlayLists();
         }
 
-        public IQueryable<Tracks> Load()
+        public IQueryable<Tracks> LoadIndex()
         {
             var tracks = from t in _context.tracks
                          select t;
@@ -53,7 +53,7 @@ namespace WebApplication1.Controllers
 
         public IActionResult Index()
         {
-            return View("Index",Load());
+            return View("Index",LoadIndex());
         }
         
         public async Task<IActionResult> Create(List<IFormFile> Image, List<int> Tracks)
@@ -67,7 +67,7 @@ namespace WebApplication1.Controllers
             if (playlistindb != null)
             {
                 Helper.isPlaylistExist = true;
-                return View("Index", Load());
+                return View("Index", LoadIndex());
             }
             ////
             ///
@@ -106,7 +106,7 @@ namespace WebApplication1.Controllers
                 _context.tracksInPlayList.Add(playlistWithTracks);
                 await _context.SaveChangesAsync();
             }
-            return View("Index", Load());
+            return View("Index", LoadIndex());
         }
 
         public IActionResult EditPage(int id)
@@ -162,7 +162,7 @@ namespace WebApplication1.Controllers
             _context.playLists.Remove(track);
             await _context.SaveChangesAsync();
 
-            return View("Index",Load());
+            return View("Index",LoadIndex());
         }
         public async Task<IActionResult> Player(string scr, int trackid,int playlistid)
         {
