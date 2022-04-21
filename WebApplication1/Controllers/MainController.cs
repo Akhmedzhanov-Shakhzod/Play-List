@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Models;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.DataLayer;
-using Microsoft.EntityFrameworkCore;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -24,34 +24,14 @@ namespace WebApplication1.Controllers
             if (Helper.user != null)
             {
                 tracks[1] = (from t in _context.tracks
-                             join p in _context.resentlyPlayeds on t.TrackId equals p.TrackId
-                             where (p.UserId == Helper.user.UserID)
-                             select t).OrderByDescending(t => t).Take(4);
+                             join rp in _context.resentlyPlayeds.OrderByDescending(rp => rp.Id) on t.TrackId equals rp.TrackId
+                             where (rp.UserId == Helper.user.UserID)
+                             select t).Take(4);
             }
-
             return tracks;
         }
-        public IActionResult Index()
+        public void updateResentlyPlayed(int id)
         {
-            Helper.player = "";
-
-            return View("Main",LoadMain());
-        }
-        public async Task<IActionResult> Player(string scr, int id)
-        {
-
-            Helper.player = scr;
-
-            IQueryable<Tracks>[] tracks = new IQueryable<Tracks>[2];
-
-            tracks[0] = (from t in _context.tracks
-                         select t).OrderByDescending(t => t.Listens).Take(4);
-
-            var track = await _context.tracks.FindAsync(id);
-
-            track.Listens += 1;
-            await _context.SaveChangesAsync();
-
             if (Helper.user != null)
             {
                 var played = (from p in _context.resentlyPlayeds
@@ -64,7 +44,7 @@ namespace WebApplication1.Controllers
                     UserId = Helper.user.UserID
                 };
                 _context.resentlyPlayeds.Add(resentlyPlayed);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 if (played != null)
                 {
@@ -73,17 +53,31 @@ namespace WebApplication1.Controllers
                         if (item.TrackId == resentlyPlayed.TrackId)
                         {
                             _context.resentlyPlayeds.Remove(item);
-                            await _context.SaveChangesAsync();
+                            _context.SaveChanges();
                         }
                     }
                 }
-                tracks[1] = (from t in _context.tracks
-                             join p in _context.resentlyPlayeds.OrderByDescending(p => p) on t.TrackId equals p.TrackId
-                             where (p.UserId == Helper.user.UserID)
-                             select t).Take(4);
             }
+        }
+        public IActionResult Index()
+        {
+            Helper.player = "";
 
-            return View("Main", tracks);
+            return View("Main",LoadMain());
+        }
+        public async Task<IActionResult> Player(string scr, int id)
+        {
+
+            Helper.player = scr;
+
+            var track = await _context.tracks.FindAsync(id);
+
+            track.Listens += 1;
+            await _context.SaveChangesAsync();
+
+            updateResentlyPlayed(id);
+
+            return View("Main", LoadMain());
         }
     }
 }

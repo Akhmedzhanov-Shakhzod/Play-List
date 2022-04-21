@@ -1,0 +1,38 @@
+﻿@using WebApplication1.Controllers
+@using WebApplication1.Models
+
+@model IQueryable<Users>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1 class="paddingtop container">All registered users in this platform : </h1>
+
+<ul class="paddingtop container">
+    <li class="user">
+        <p>
+            User name :
+        </p>
+        <p>
+            User password :
+        </p>
+        <p>
+            User access level :
+        </p>
+    </li>
+    @foreach(var user in @Model)
+    {
+        @if(Helper.user?.UserID != @user.UserID)
+        {
+            <li class="user">
+                <p>@user.UserName</p>
+                <p>@user.Password</p>
+                <p>@user.UserAccessLevel</p>
+            </li>
+        }
+    }
+</ul>
+
+
+

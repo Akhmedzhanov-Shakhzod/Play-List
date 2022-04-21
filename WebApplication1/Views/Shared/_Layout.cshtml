@@ -49,7 +49,10 @@
                         <a class="" asp-area="" asp-controller="Home" asp-action="Library">Моя медиатека</a>
                     </div>
                     <div>
-
+                    @if(Helper.user?.UserAccessLevel == "admin")
+                    {
+                        <a class="" asp-area="" asp-controller="Home" asp-action="Users">Users</a>
+                    }
                     </div>
                     <div>
                         <a class="" asp-area="" asp-controller="PlayList" asp-action="Index">Создать плейлист</a>

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataLayer;
 using WebApplication1.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WebApplication1.Controllers
 {
@@ -20,6 +22,13 @@ namespace WebApplication1.Controllers
             Helper.playLists = helper.PlayLists();
         }
 
+        public static string hashPassword(string password)
+        {
+            SHA1 sHA1 = SHA1.Create();
+            byte[] passwordbytes = Encoding.ASCII.GetBytes(password);
+            byte[] encrypte_bytes = sHA1.ComputeHash(passwordbytes);
+            return Convert.ToBase64String(encrypte_bytes);
+        }
         public IQueryable<Tracks> LoadIndex()
         {
             var tracks = from t in _context.tracks
@@ -44,6 +53,39 @@ namespace WebApplication1.Controllers
             return tracks;
         }
 
+        public IQueryable<Users> LoadUsers()
+        {
+            return _context.users.Select(u => u).OrderByDescending(u => u.UserName);
+        }
+        public void updateResentlyPlayed(int id)
+        {
+            if (Helper.user != null)
+            {
+                var played = (from p in _context.resentlyPlayeds
+                              where (p.UserId == Helper.user.UserID)
+                              select p).ToList();
+
+                ResentlyPlayed resentlyPlayed = new ResentlyPlayed()
+                {
+                    TrackId = id,
+                    UserId = Helper.user.UserID
+                };
+                _context.resentlyPlayeds.Add(resentlyPlayed);
+                _context.SaveChanges();
+
+                if (played != null)
+                {
+                    foreach (var item in played)
+                    {
+                        if (item.TrackId == resentlyPlayed.TrackId)
+                        {
+                            _context.resentlyPlayeds.Remove(item);
+                            _context.SaveChanges();
+                        }
+                    }
+                }
+            }
+        }
         public IActionResult Login()
         {
             return View();
@@ -59,10 +101,11 @@ namespace WebApplication1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registrate()
         {
+            string password = Request.Form["Password"];
             Users user = new Users()
             {
                 UserName = Request.Form["UserName"],
-                Password =  Request.Form["Password"],
+                Password =  hashPassword(password),
                 UserAccessLevel = Request.Form["UserAccessLevel"]
             };
 
@@ -96,6 +139,8 @@ namespace WebApplication1.Controllers
          
             string UserName = Request.Form["UserName"];
             string Password =  Request.Form["Password"];
+
+            Password = hashPassword(Password);
 
             if (ModelState.IsValid)
             {
@@ -163,16 +208,9 @@ namespace WebApplication1.Controllers
             var track = await _context.tracks.FindAsync(id);
 
             track.Listens += 1;
+            await _context.SaveChangesAsync();
 
-            try
-            {
-                _context.tracks.Update(track);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
+            updateResentlyPlayed(id);
 
             return View("Index", LoadIndex());
         }
@@ -217,6 +255,10 @@ namespace WebApplication1.Controllers
         public IActionResult Library()
         {
             return View("Views/Library/Index.cshtml");
+        }
+        public IActionResult Users()
+        {
+            return View("Users",LoadUsers());
         }
         public IActionResult Privacy()
         {

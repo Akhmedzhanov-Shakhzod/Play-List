@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataLayer;
 using WebApplication1.Models;
 
@@ -25,6 +24,35 @@ namespace WebApplication1.Controllers
                                where (s.UserId == Helper.user.UserID)
                                select t).OrderByDescending(t => t);
             return savedtracks;
+        }
+        public void updateResentlyPlayed(int id)
+        {
+            if (Helper.user != null)
+            {
+                var played = (from p in _context.resentlyPlayeds
+                              where (p.UserId == Helper.user.UserID)
+                              select p).ToList();
+
+                ResentlyPlayed resentlyPlayed = new ResentlyPlayed()
+                {
+                    TrackId = id,
+                    UserId = Helper.user.UserID
+                };
+                _context.resentlyPlayeds.Add(resentlyPlayed);
+                _context.SaveChanges();
+
+                if (played != null)
+                {
+                    foreach (var item in played)
+                    {
+                        if (item.TrackId == resentlyPlayed.TrackId)
+                        {
+                            _context.resentlyPlayeds.Remove(item);
+                            _context.SaveChanges();
+                        }
+                    }
+                }
+            }
         }
         public IActionResult Saved()
         {
@@ -53,15 +81,9 @@ namespace WebApplication1.Controllers
 
             track.Listens += 1;
 
-            try
-            {
-                _context.Update(track);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
+            await _context.SaveChangesAsync();
+
+            updateResentlyPlayed(id);
 
             return View("Saved", LoadSaved());
         }

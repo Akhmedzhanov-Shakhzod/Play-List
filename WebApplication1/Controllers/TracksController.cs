@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.DataLayer;
 using WebApplication1.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WebApplication1.Controllers
 {
