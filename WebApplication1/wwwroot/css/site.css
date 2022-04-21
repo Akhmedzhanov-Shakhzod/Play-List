@@ -348,7 +348,7 @@ input.uplod-btn {
 .image-playlist:hover {
     background-image: url('../files/pictures/upload.png');
 }
-.image-playlist img{
+.PlayList-Form img{
     width: 260px;
     height: 260px;
     z-index: 10;
@@ -409,4 +409,70 @@ input.uplod-btn {
     right: 3%;
     top: 3%;
 }
+
+.marginibottom {
+    margin-bottom: 10px;
+}
+
+.paddingtop {
+    padding-top: 20px;
+}
+.liblary-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: "saved saved 1 2"
+                         "3 4 5 6";
+}
+
+.liblary-menu a {
+     color: white;
+     text-decoration: none;
+}
+
+.library {
+    display: inline-block;
+    background-color: #0e0c0c;
+    margin: 15px;
+    height: 340px;
+    width: 267px;
+}
+
+.library:hover {
+    background-color: #808080;
+}
+
+.library-saved {
+    display: inline-block;
+    grid-area: saved;
+    width: 567px;
+    background-color: #9cb06c;
+}
+
+.library-saved:hover {
+    background-color: #acc966;
+}
+
+.library-saved h2 {
+    margin-left: 65px;
+    margin-top: 260px;
+}
+
+
+.library h5 {
+    margin: 0;
+    margin-top: 20px;
+}
+
+.library h5, .library p {
+    margin-left: 35px;
+}
+
+.library img {
+    width: 74%;
+    height: 225px;
+    margin: 15px 0 0 13%;
+}
+
+
 

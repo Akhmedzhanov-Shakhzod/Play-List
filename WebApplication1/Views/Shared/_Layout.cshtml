@@ -46,7 +46,7 @@
                 else
                 {   
                     <div>
-                        <a class="" asp-area="" asp-controller="" asp-action="">Моя медиатека</a>
+                        <a class="" asp-area="" asp-controller="Home" asp-action="Library">Моя медиатека</a>
                     </div>
                     <div>
 
@@ -70,7 +70,7 @@
                 {
                     @foreach(var @playlist in Helper.playLists)
                     {
-                        <div>
+                        <div class="marginibottom">
                             <a class="" asp-area="" asp-controller="PlayList" asp-action="EditPage" asp-route-id="@playlist.Id">@playlist.Name</a>
                         </div> 
                     }

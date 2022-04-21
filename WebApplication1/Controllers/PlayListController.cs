@@ -89,7 +89,7 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                string pathpicture = "/files/pictures/default-for-playlist.png";
+                string pathpicture = "/files/pictures/default-for-playlist.jpg";
                 playList.Picture = pathpicture;
             }
 

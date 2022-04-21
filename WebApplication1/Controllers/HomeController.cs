@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 using WebApplication1.DataLayer;
 using WebApplication1.Models;
 
@@ -230,6 +229,10 @@ namespace WebApplication1.Controllers
             return View("Index",tracks);
         }
 
+        public IActionResult Library()
+        {
+            return View("Views/Library/Index.cshtml");
+        }
         public IActionResult Privacy()
         {
             return View();

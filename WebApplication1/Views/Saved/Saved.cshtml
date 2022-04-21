@@ -9,72 +9,72 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h1 class="center">Saved Tracks</h1>
+<div class="paddingtop">
+    <h1 class="center">Saved Tracks</h1>
 
-@if(@Model != null)
-{
-    <div id="Player">
-        <audio id="audioPlayer" controls autoplay loop preload="metadata">
-            <source src="@Helper.player" type="audio/mpeg" />
-            Your browser don`t support audio player... Update browser and try again ;) 
-        </audio>
-    </div>
-
-
-    <div class="search-menu">
-        <div>
-        <form  method="post">
-            <select name="searchId">
-                <option value="1">Track name</option>
-                <option value="2">Artist</option>
-                <option value="3">Most popular</option>
-            </select>
-            <input asp-area="" asp-controller="Saved" asp-action="OrderBy" type="submit" class="btn btn-primary" value="order by"/>
-        </form>
-        </div>
-
-        <div>
-            <form  method="post">
-                <input name="searchString" id="elastic" type="text" placeholder="search"/>
-                <input asp-area="" asp-controller="Saved" asp-action="Search" type="submit" hidden/>
-            </form>
-        </div>
-    </div>
-
-    <!-- /*************** bootstrap from https://codepen.io/MiRaxX69/pen/PvaEaG *****************/ -->
-    <!-- jade: compressed-->
-
-    <ul class="audio-players">
-    @foreach (var @track in @Model)
+    @if(@Model != null)
     {
-    <li class="elastic">
-        @if(Helper.user != null)
-        {
-            <form method="post" class="saved-margin">
-                <a asp-controller="Saved" asp-action="UnSaved" asp-route-id="@track.TrackId">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star" viewBox="0 0 16 16">
-                    <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
-                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                </svg>
-                </a>
-            </form>
-        }
-            <div class="audio-player js-audio-player play">
-        <form method="post">
-            <button type="submit" asp-controller="Saved" asp-action="Player" asp-route-scr="@track.Audio" asp-route-id="@track.TrackId" class="audio-player__control">
-                <div class="audio-player__control-icon"></div>
-            </button>
-        </form>
-        <div class="audio-player__title">
-            <h5>@track.Artist</h5>
-            <p>@track.TrackName</p>
+        <div id="Player">
+            <audio id="audioPlayer" controls autoplay loop preload="metadata">
+                <source src="@Helper.player" type="audio/mpeg" />
+                Your browser don`t support audio player... Update browser and try again ;) 
+            </audio>
         </div>
-        <button class="player-a"><img src="@track.Picture"/></button>
-    </div>
-    </li>   
-    }
-    </ul>   
-}
-<!-- /********************************************************************/ -->
 
+
+        <div class="search-menu">
+            <div>
+            <form  method="post">
+                <select name="searchId">
+                    <option value="1">Track name</option>
+                    <option value="2">Artist</option>
+                    <option value="3">Most popular</option>
+                </select>
+                <input asp-area="" asp-controller="Saved" asp-action="OrderBy" type="submit" class="btn btn-primary" value="order by"/>
+            </form>
+            </div>
+
+            <div>
+                <form  method="post">
+                    <input name="searchString" id="elastic" type="text" placeholder="search"/>
+                    <input asp-area="" asp-controller="Saved" asp-action="Search" type="submit" hidden/>
+                </form>
+            </div>
+        </div>
+
+        <!-- /*************** bootstrap from https://codepen.io/MiRaxX69/pen/PvaEaG *****************/ -->
+        <!-- jade: compressed-->
+
+        <ul class="audio-players">
+        @foreach (var @track in @Model)
+        {
+        <li class="elastic">
+            @if(Helper.user != null)
+            {
+                <form method="post" class="saved-margin">
+                    <a asp-controller="Saved" asp-action="UnSaved" asp-route-id="@track.TrackId">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-star" viewBox="0 0 16 16">
+                        <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
+                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                    </svg>
+                    </a>
+                </form>
+            }
+                <div class="audio-player js-audio-player play">
+            <form method="post">
+                <button type="submit" asp-controller="Saved" asp-action="Player" asp-route-scr="@track.Audio" asp-route-id="@track.TrackId" class="audio-player__control">
+                    <div class="audio-player__control-icon"></div>
+                </button>
+            </form>
+            <div class="audio-player__title">
+                <h5>@track.Artist</h5>
+                <p>@track.TrackName</p>
+            </div>
+            <button class="player-a"><img src="@track.Picture"/></button>
+        </div>
+        </li>   
+        }
+        </ul>   
+    }
+</div>
 

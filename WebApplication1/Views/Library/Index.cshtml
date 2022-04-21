@@ -1,0 +1,22 @@
+﻿@using WebApplication1.Controllers
+
+
+@{
+    ViewData["Title"] = "Library";
+}
+
+<div class="paddingtop liblary-menu">
+    
+    <a class="library library-saved" asp-area="" asp-controller="Saved" asp-action="Saved">
+        <h2>Saved tracks</h2>
+    </a>
+
+    @foreach(var playlist in Helper.playLists)
+    {
+        <a class="library" asp-area="" asp-controller="PlayList" asp-action="EditPage" asp-route-id="@playlist.Id">
+            <img src="@playlist.Picture">
+            <h5>@playlist.Name</h5>
+            <p>Author: @Helper.user.UserName</p>
+        </a>
+    }
+</div>
