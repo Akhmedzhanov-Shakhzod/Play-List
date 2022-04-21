@@ -27,10 +27,10 @@
                 }
 
                 <div>
-                    <a class="" asp-area="" asp-controller="Main" asp-action="Index">Главное</a>
+                    <a class="" asp-area="" asp-controller="Main" asp-action="Index">Main</a>
                 </div>
                 <div>
-                    <a class="" asp-area="" asp-controller="Home" asp-action="Index">Поиск</a>
+                    <a class="" asp-area="" asp-controller="Home" asp-action="Index">Search</a>
                 </div>
 
                 @if(Helper.user == null)
@@ -46,7 +46,7 @@
                 else
                 {   
                     <div>
-                        <a class="" asp-area="" asp-controller="Home" asp-action="Library">Моя медиатека</a>
+                        <a class="" asp-area="" asp-controller="Home" asp-action="Library">My library</a>
                     </div>
                     <div>
                     @if(Helper.user?.UserAccessLevel == "admin")
@@ -55,10 +55,10 @@
                     }
                     </div>
                     <div>
-                        <a class="" asp-area="" asp-controller="PlayList" asp-action="Index">Создать плейлист</a>
+                        <a class="" asp-area="" asp-controller="PlayList" asp-action="Index">Create playlist</a>
                     </div>
                     <div>
-                        <a class="" asp-area="" asp-controller="Saved" asp-action="Saved">Любимые треки</a>
+                        <a class="" asp-area="" asp-controller="Saved" asp-action="Saved">Saved tracks</a>
                     </div>
                 }
             </div>
