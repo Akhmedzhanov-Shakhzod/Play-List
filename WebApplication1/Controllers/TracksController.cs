@@ -8,13 +8,14 @@ namespace WebApplication1.Controllers
     public class TracksController : Controller
     {
         private readonly DbPlayList _context;
+        private readonly Helper _helper;
 
         public TracksController(DbPlayList context)
         {
             _context = context;
 
-            Helper helper = new Helper(_context);
-            Helper.playLists = helper.PlayLists();
+            _helper = new Helper(_context);
+            Helper.playLists = _helper.PlayLists();
         }
 
         public IQueryable<Tracks> LoadHomeIndex()

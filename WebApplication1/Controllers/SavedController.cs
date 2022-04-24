@@ -7,14 +7,14 @@ namespace WebApplication1.Controllers
     public class SavedController : Controller
     {
         private readonly DbPlayList _context;
-
+        private readonly Helper _helper;
 
         public SavedController(DbPlayList context)
         {
             _context = context;
 
-            Helper helper = new Helper(_context);
-            Helper.playLists = helper.PlayLists();
+            _helper = new Helper(_context);
+            Helper.playLists = _helper.PlayLists();
         }
 
         public IOrderedQueryable<Tracks> LoadSaved()
@@ -79,11 +79,7 @@ namespace WebApplication1.Controllers
             Helper.player = scr;
             var track = await _context.tracks.FindAsync(id);
 
-            track.Listens += 1;
-
-            await _context.SaveChangesAsync();
-
-            updateResentlyPlayed(id);
+            await _helper.IncrementListen(id);
 
             return View("Saved", LoadSaved());
         }

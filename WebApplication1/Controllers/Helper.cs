@@ -47,5 +47,13 @@ namespace WebApplication1.Controllers
             }
         }
 
+        public async Task IncrementListen(int trackId)
+        {
+            var track = await _context.tracks.FindAsync(trackId);
+
+            track.Listens += 1;
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

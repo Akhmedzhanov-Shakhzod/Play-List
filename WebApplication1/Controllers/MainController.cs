@@ -8,12 +8,14 @@ namespace WebApplication1.Controllers
     public class MainController : Controller
     {
         private readonly DbPlayList _context;
+        private readonly Helper _helper;
+
         public MainController(DbPlayList context)
         {
             _context = context;
 
-            Helper helper = new Helper(_context);
-            Helper.playLists = helper.PlayLists();
+            _helper = new Helper(_context);
+            Helper.playLists = _helper.PlayLists();
         }
         public IQueryable<Tracks>[] LoadMain()
         {
@@ -70,10 +72,7 @@ namespace WebApplication1.Controllers
 
             Helper.player = scr;
 
-            var track = await _context.tracks.FindAsync(id);
-
-            track.Listens += 1;
-            await _context.SaveChangesAsync();
+            await _helper.IncrementListen(id);
 
             updateResentlyPlayed(id);
 

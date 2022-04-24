@@ -7,17 +7,15 @@ namespace WebApplication1.Controllers
 {
     public class PlayListController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
         private readonly DbPlayList _context;
+        private readonly Helper _helper;
 
         public PlayListController(ILogger<HomeController> logger, DbPlayList context)
         {
             _context = context;
-            _logger = logger;
 
-            Helper helper = new Helper(_context);
-            Helper.playLists = helper.PlayLists();
+            _helper = new Helper(_context);
+            Helper.playLists = _helper.PlayLists();
         }
 
         public IQueryable<Tracks> LoadIndex()
@@ -200,11 +198,7 @@ namespace WebApplication1.Controllers
             //result += "\" type = \"audio/mpeg\">";
             Helper.player = scr;
 
-            var track = await _context.tracks.FindAsync(trackid);
-
-            track.Listens += 1;
-
-            await _context.SaveChangesAsync();
+            await _helper.IncrementListen(trackid);
 
             updateResentlyPlayed(trackid);
 
