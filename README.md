@@ -1,11 +1,14 @@
 # Play-List
 
-### Stach {
+### Stack {
 >#### C#
 >#### ASP.NET Core MVC
 >#### Entity Framework Core
 >#### MsSql
 }
+
+#### Code first
+
 ---
 ## Database diagram:
 
