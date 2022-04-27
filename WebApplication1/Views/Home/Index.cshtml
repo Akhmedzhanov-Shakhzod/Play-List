@@ -2,7 +2,7 @@
 @using WebApplication1.Controllers
 @using WebApplication1.Models
 
-@model IQueryable<Tracks>
+@model (IQueryable<Tracks>,(IQueryable<Artists>,IQueryable<Genres>))
 
 
 @{
@@ -29,12 +29,24 @@
 <div class="search-menu">
     <div>
         <form  method="post">
-            <select name="searchId">
-                <option value="1">Track name</option>
-                <option value="2">Artist</option>
-                <option value="3">Most popular</option>
+            <select name="ArtistId">
+                @foreach(var artist in @Model.Item2.Item1)
+                {
+                    <option value="@artist.ArtistId">@artist.ArtistName</option>
+                }
             </select>
-            <input asp-area="" asp-controller="Home" asp-action="OrderBy" type="submit" class="btn btn-primary" value="order by"/>
+            <input asp-area="" asp-controller="Home" asp-action="Filter" asp-route-type="1" type="submit" class="btn btn-primary" value="filter by"/>
+       </form>
+    </div>
+    <div>
+        <form  method="post">
+            <select name="GenreId">
+                @foreach(var genre in @Model.Item2.Item2)
+                {
+                    <option value="@genre.GenreId">@genre.GenreName</option>
+                }
+            </select>
+            <input asp-area="" asp-controller="Home" asp-action="Filter" asp-route-type="2" type="submit" class="btn btn-primary" value="filter by"/>
        </form>
     </div>
     <div>
@@ -48,10 +60,10 @@
 <!-- /*************** bootstrap from https://codepen.io/MiRaxX69/pen/PvaEaG *****************/ -->
 <!-- jade: compressed-->
 
-@if(@Model != null)
+@if(@Model.Item1 != null)
 {
  <ul class="audio-players">
-    @foreach (var @track in @Model)
+    @foreach (var @track in @Model.Item1)
     {
      <li class="elastic">
            @if(Helper.user != null)

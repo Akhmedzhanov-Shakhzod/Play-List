@@ -38,10 +38,18 @@ namespace WebApplication1.Controllers
             byte[] encrypte_bytes = sHA1.ComputeHash(passwordbytes);
             return Convert.ToBase64String(encrypte_bytes);
         }
-        public IQueryable<Tracks> LoadIndex()
+        public (IQueryable<Artists>, IQueryable<Genres>) LoadForIndex()
         {
-            return (from u in _context.tracks
-                    select u).OrderByDescending(t => t);
+            var artists = from a in _context.artists select a;
+            var genres = from g in _context.genres select g;
+
+            return (artists, genres);
+        }
+        public (IQueryable<Tracks>, (IQueryable<Artists>, IQueryable<Genres>)) LoadIndex()
+        {
+            var tracks = (from t in _context.tracks select t).OrderByDescending(t => t);
+
+            return (tracks,LoadForIndex());
         }
         public IQueryable<Tracks>[] LoadMain()
         {
@@ -142,39 +150,38 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Login");
         }
 
-        public IActionResult OrderBy(string searchId)
+        public IActionResult Filter(int type)
         {
+            int artistid = Convert.ToInt32(Request.Form["ArtistId"]);
+            int genreid = Convert.ToInt32(Request.Form["GenreId"]);
 
-            var tracks = LoadIndex();
+            IQueryable<Tracks> tracks = null;
 
-            switch (searchId)
+            switch (type)
             {
-                case "1":
-                    tracks = tracks.OrderBy(u => u.TrackName);
-                    break;
-                case "2":
-                    tracks = tracks.OrderBy(u => u.Artist);
-                    break ;
-                case "3":
-                    tracks = tracks.OrderBy(u => u.Listens);
-                    break;
+                case 1:
+                    tracks = _context.tracks.Where(t => t.Artist.ArtistId == artistid);
+                break;
+                case 2:
+                    tracks = _context.tracks.Where(t => t.Genre.GenreId == genreid);
+                break;
             }
             Helper.player = "";
-            return View("Index", tracks);
+            return View("Index",(tracks,LoadForIndex()));
         }
 
         public IActionResult Search(string searchString)
         {
 
-            var tracks = LoadIndex();
+            var tracks = from t in _context.tracks select t;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                tracks = tracks.Where(s => s.Artist.ArtistName.Contains(searchString) || s.TrackName.Contains(searchString));
+                tracks = tracks.Where(s => s.Artist.ArtistName.Contains(searchString)|| s.Genre.GenreName.Contains(searchString) || s.TrackName.Contains(searchString));
             }
 
             Helper.player = "";
-            return View("Index", tracks);
+            return View("Index", (tracks,LoadForIndex()));
         }
 
         public async Task<IActionResult> Player(string scr,int id)
