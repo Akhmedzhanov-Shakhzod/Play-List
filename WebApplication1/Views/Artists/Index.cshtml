@@ -1,0 +1,39 @@
+﻿@using WebApplication1.Controllers
+@using WebApplication1.Models
+
+
+@model (List<Artists>,List<int>)
+
+@{
+    ViewData["Title"] = "Artists";
+}
+
+<p class="text-danger center">@Helper.info</p>
+
+<form method="post" class="paddingtop w-75 form-add">
+    <input required name="ArtistName" type="text" placeholder="Enter the name of Artist" />
+    <button asp-controller="Artists" asp-action="AddArtist" class="btn btn-success">Add</button>
+</form>
+
+<div class="paddingtop container">
+    <ul>
+        <li class="marginibottom grid-list w-75">
+            <p><strong>Artist name</strong></p>
+            <p class="center"><strong>Count traks</strong></p>
+        </li>
+        @for(var i = 0; i < @Model.Item1.Count(); i++)
+        {
+            <li class="marginibottom grid-list w-75">
+                <a asp-controller="Artists" asp-action="Edit" asp-route-artistid="@Model.Item1[i].ArtistId">@Model.Item1[i].ArtistName</a>
+                <p class="center">@Model.Item2[i]</p>
+                <form method="post" class="saved">
+                    <a asp-controller="Artists" asp-action="DeleteArtist" asp-route-artistid="@Model.Item1[i].ArtistId">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </a>
+                </form>
+            </li>
+        }
+    </ul>
+</div>
