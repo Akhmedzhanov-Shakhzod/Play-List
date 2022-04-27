@@ -14,6 +14,8 @@ namespace WebApplication1.Controllers
         {
             _context = context;
 
+            Helper.isPlaylistExist = false;
+
             _helper = new Helper(_context);
             Helper.playLists = _helper.PlayLists();
         }
@@ -31,7 +33,7 @@ namespace WebApplication1.Controllers
             return tracks;
         }
 
-        public (PlayList,IQueryable<Tracks>) LoadEditor(int id)
+        public (PlayList,IQueryable<Tracks>,IQueryable<Tracks>) LoadEditor(int id)
         {
             var playlist = (from p in _context.playLists
                             where (p.Id == id)
@@ -45,8 +47,10 @@ namespace WebApplication1.Controllers
                          where p.Author == Helper.user.UserName && p.Id == id
                          select t;
 
-            var tracksInPlayList = (playlist[0], tracks);
-            return tracksInPlayList;
+            var alltracks = from t in _context.tracks
+                            select t;
+
+            return (playlist[0], tracks, alltracks);
         }
 
         public IActionResult Index()
@@ -151,6 +155,26 @@ namespace WebApplication1.Controllers
             }
 
             return View("Edit", LoadEditor(playlistid));
+        }
+
+        public async Task<IActionResult> Add(int id,List<int> Tracks)
+        {
+            foreach (var trackid in Tracks)
+            {
+                var playlist = _context.tracksInPlayList.Where(tp => tp.PlayList.Id == id && tp.Track.TrackId == trackid).FirstOrDefault();
+
+                if (playlist == null)
+                {
+                    var newtp = new TracksInPlayList()
+                    {
+                        PlayList = _context.playLists.Where(p => p.Id == id).First(),
+                        Track = _context.tracks.Where(t => t.TrackId == trackid).First()
+                    };
+                    _context.tracksInPlayList.Add(newtp);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return View("Edit", LoadEditor(id));
         }
         public async Task<IActionResult> DeletePlayList(int playlistid)
         {

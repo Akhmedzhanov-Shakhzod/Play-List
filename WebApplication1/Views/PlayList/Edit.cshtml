@@ -2,7 +2,7 @@
 @using WebApplication1.Controllers
 @using WebApplication1.Models
 
-@model (PlayList, IQueryable<Tracks>)
+@model (PlayList, IQueryable<Tracks>,IQueryable<Tracks>)
 
 @{
     ViewData["Title"] = "Edit play list";
@@ -39,8 +39,21 @@
             <label>Author: @Helper.user?.UserName</label>
         </div>
         <div></div>
-        <button asp-controller="PlayList" asp-action="Edit" asp-route-playlistid="@Model.Item1.Id" class="btn-edit btn btn-success" type="submit">Save</button>
+        <button hidden asp-controller="PlayList" asp-action="Edit" asp-route-playlistid="@Model.Item1.Id" class="btn-edit btn btn-success" type="submit">Save</button>
     </form>
+
+    <form class="PlayList-add" method="post">
+        <select name="Tracks" class="multi-select" multiple data-selected-text-format="values">
+        @if(@Model.Item3 != null){
+            @foreach(var @track in @Model.Item3)
+            {
+                <option class="text-black" value="@track.TrackId">@track.Artist @track.TrackName</option>
+            }
+        }
+        </select>
+        <button asp-controller="PlayList" asp-action="Add" asp-route-id="@Model.Item1.Id" class="btn btn-success btn-marginleft" type="submit">Add</button>
+    </form>
+
     @if(@Model.Item2 != null)
         {
          <ul class="audio-players">

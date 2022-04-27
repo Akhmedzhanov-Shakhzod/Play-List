@@ -22,7 +22,7 @@
             <label>Author: @Helper.user?.UserName</label>
         </div>
 
-        <select name="Tracks" class="multi-select" required multiple data-selected-text-format="values">
+        <select name="Tracks" class="multi-select" multiple data-selected-text-format="values">
         @if(@Model != null){
             @foreach(var @track in @Model)
             {

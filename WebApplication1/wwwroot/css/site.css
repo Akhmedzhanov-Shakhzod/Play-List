@@ -336,6 +336,7 @@ input.uplod-btn {
     padding-top: 3%;
     display: grid;
     grid-template-columns: 0.3fr 0.7fr;
+    margin-left: 60px;
 }
 
 .image-playlist {
@@ -503,3 +504,11 @@ li.user {
     border-radius: 30px;
 }
 
+.PlayList-add {
+    margin-left: 640px;
+    margin-top: 50px;
+}
+
+button.btn-marginleft {
+    margin-left: 50px;
+}
