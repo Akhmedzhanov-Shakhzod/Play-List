@@ -26,7 +26,7 @@
         @if(@Model != null){
             @foreach(var @track in @Model)
             {
-                <option value="@track.TrackId">@track.Artist @track.TrackName</option>
+                <option class="text-black" value="@track.TrackId">@track.Artist @track.TrackName</option>
             }
         }
         </select>

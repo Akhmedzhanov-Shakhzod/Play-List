@@ -60,27 +60,23 @@ namespace WebApplication1.Controllers
             if (Helper.user != null)
             {
                 var played = (from rp in _context.resentlyPlayeds
-                              where (rp.User.UserID == Helper.user.UserID)
-                              select rp).ToList();
+                              where (rp.User.UserID == Helper.user.UserID 
+                              &&
+                              rp.Track.TrackId == id)
+                              select rp).FirstOrDefault();
 
                 ResentlyPlayed resentlyPlayed = new ResentlyPlayed()
                 {
-                    Track = _context.tracks.Where(t => t.TrackId == id).ToList()[0],
-                    User = _context.users.Where(u => u.UserID == Helper.user.UserID).ToList()[0]
+                    Track = _context.tracks.Where(t => t.TrackId == id).First(),
+                    User = _context.users.Where(u => u.UserID == Helper.user.UserID).First()
                 };
                 _context.resentlyPlayeds.Add(resentlyPlayed);
                 await _context.SaveChangesAsync();
 
                 if (played != null)
                 {
-                    foreach (var item in played)
-                    {
-                        if (item.Track.TrackId == resentlyPlayed.Track.TrackId)
-                        {
-                            _context.resentlyPlayeds.Remove(item);
-                            await _context.SaveChangesAsync();
-                        }
-                    }
+                    _context.resentlyPlayeds.Remove(played);
+                    await _context.SaveChangesAsync();
                 }
             }
         }

@@ -19,11 +19,10 @@ namespace WebApplication1.Controllers
 
         public IOrderedQueryable<Tracks> LoadSaved()
         {
-            var savedtracks = (from t in _context.tracks
-                               join s in _context.savedTracks on t.TrackId equals s.Track.TrackId
-                               where (s.User.UserID == Helper.user.UserID)
-                               select t).OrderByDescending(t => t);
-            return savedtracks;
+            return (from t in _context.tracks
+                    join s in _context.savedTracks on t.TrackId equals s.Track.TrackId
+                    where (s.User.UserID == Helper.user.UserID)
+                    select t).OrderByDescending(t => t);
         }
         public IActionResult Saved()
         {

@@ -40,10 +40,8 @@ namespace WebApplication1.Controllers
         }
         public IQueryable<Tracks> LoadIndex()
         {
-            var tracks = from u in _context.tracks
-                         select u;
-            tracks = tracks.OrderByDescending(u => u);
-            return tracks;
+            return (from u in _context.tracks
+                    select u).OrderByDescending(t => t);
         }
         public IQueryable<Tracks>[] LoadMain()
         {
@@ -195,17 +193,17 @@ namespace WebApplication1.Controllers
 
         public async Task<IActionResult> Saved(int id)
         {
-            var savedtrack = _context.savedTracks.FirstOrDefault(s => s.Track.TrackId == id);
+            var savedtrack = _context.savedTracks.FirstOrDefault(s => s.Track.TrackId == id && s.User.UserID == Helper.user.UserID);
 
             if (savedtrack != null)
             {
-                if(savedtrack.User.UserID == Helper.user.UserID) return View("Index", LoadIndex());
+                return View("Index", LoadIndex());
             }
 
             SavedTracks saved = new SavedTracks()
             {
-                User = (Users)_context.users.Where(u => u.UserID == Helper.user.UserID),
-                Track = (Tracks)_context.tracks.Where(t => t.TrackId == id)
+                User = _context.users.Where(u => u.UserID == Helper.user.UserID).First(),
+                Track = _context.tracks.Where(t => t.TrackId == id).First()
             };
             _context.savedTracks.Add(saved);
             await _context.SaveChangesAsync();

@@ -20,16 +20,24 @@ namespace WebApplication1.Controllers
 
         public IQueryable<Tracks> LoadHomeIndex()
         {
-            var tracks = from u in _context.tracks
-                         select u;
-            tracks = tracks.OrderByDescending(u => u);
-            return tracks;
+            return (from u in _context.tracks
+                    select u).OrderByDescending(t => t);
+        }
+
+        public (List<Artists>,List<Genres>) LoadAddTrack()
+        {
+            var artists = (from a in _context.artists
+                          select a).ToList();
+            var genres = (from g in _context.genres
+                          select g).ToList();
+            return (artists, genres);
         }
 
         public IActionResult Index()
         {
-            return View("AddTrack");
+            return View("AddTrack",("",LoadAddTrack()));
         }
+
         [HttpPost("FileUpload")]
         public async Task<IActionResult> AddTrack(List<IFormFile> files)
         {
@@ -38,13 +46,15 @@ namespace WebApplication1.Controllers
                 ////
                 ////
                 var trackndb = await _context.tracks.FirstOrDefaultAsync(u => u.Audio == "/files/tracks/" + files[0].FileName);
-                if(trackndb != null) return View("AddTrack", Helper.Errors.TrackAlreadyExist);
+                if(trackndb != null) return View("AddTrack", (Helper.Errors.TrackAlreadyExist,LoadAddTrack()));
                 ////
                 ////
 
-                var genre = _context.genres.FirstOrDefault();
+                int Artistid = Convert.ToInt32(Request.Form["Artist"]);
+                int Genreid = Convert.ToInt32(Request.Form["Genre"]);
 
-                var artist = _context.artists.FirstOrDefault(); 
+                var Artist = await _context.artists.Where(a => a.ArtistId == Artistid).FirstAsync();
+                var Genre = await _context.genres.Where(a => a.GenreId == Genreid).FirstAsync();
 
                 // путь к папке Files
                 string pathaudio = "wwwroot/files/tracks/" + files[0].FileName;
@@ -57,9 +67,9 @@ namespace WebApplication1.Controllers
                 Tracks track = new Tracks();
 
                 track.TrackName = files[0].FileName;
-                track.Artist = artist;
-
-                track.Genre = genre;
+                
+                track.Artist = Artist;
+                track.Genre = Genre;
 
                 track.Listens = 0;
                 track.Audio = pathaudio;
