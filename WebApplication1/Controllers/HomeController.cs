@@ -19,15 +19,15 @@ namespace WebApplication1.Controllers
             Helper.playLists = _helper.PlayLists();
 
 
-            var genre = new Genres( "Default");
+            //var genre = new Genres( "Default");
 
-            var artist = new Artists( "Artist");
+            //var artist = new Artists( "Artist");
 
-            _context.genres.Add(genre);
-            _context.SaveChanges();
+            //_context.genres.Add(genre);
+            //_context.SaveChanges();
 
-            _context.artists.Add(artist);
-            _context.SaveChanges();
+            //_context.artists.Add(artist);
+            //_context.SaveChanges();
 
         }
 

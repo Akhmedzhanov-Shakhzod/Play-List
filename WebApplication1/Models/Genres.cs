@@ -9,9 +9,5 @@ namespace WebApplication1.Models
         [Required]
         public string GenreName { get; set; }
 
-        public Genres(string genreName)
-        {
-            GenreName = genreName;
-        }
     }
 }

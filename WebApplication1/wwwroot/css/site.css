@@ -20,7 +20,8 @@ audio {
 }
 
 a{
-    text-decoration: none;
+    text-decoration: none !important;
+    color: white!important;
 }
 
 audio::-webkit-media-controls-panel {
@@ -250,7 +251,7 @@ body {
     border-radius: 30px;
 }
 
-input.login-form-user-input:hover{
+input.login-form-user-input:hover, .form-add input:hover{
     border: 1px solid #232324;
 }
 
@@ -481,3 +482,24 @@ li.user {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
+
+.grid-list {
+    display: grid;
+    grid-template-columns: 0.6fr 0.3fr 0.1fr;
+}
+
+.flexiable {
+    display:flex;
+    justify-content: space-between;
+}
+
+.form-add input {
+    width: 500px;
+    margin-left: 45px;
+    margin-right: 80px;
+    margin-bottom: 20px;
+    height: 45px;
+    border: 3px solid #232324;
+    border-radius: 30px;
+}
+

@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
         public static string player { get; set; }
         public static int countUserPlaylist { get; set; }
         public static bool isPlaylistExist { get; set; } = false;
-        public static bool isEditMode { get; set; }
+        public static string info { get; set; }
 
 
         private readonly DbPlayList _context;
