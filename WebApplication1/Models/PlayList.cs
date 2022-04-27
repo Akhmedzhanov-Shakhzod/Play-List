@@ -13,13 +13,4 @@ namespace WebApplication1.Models
         [Required]
         public string Picture { get; set; }
     }
-    public class TracksInPlayList
-    {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public int PlayListId { get; set; }
-        [Required]
-        public int TrackId { get; set; }
-    }
 }

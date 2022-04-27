@@ -20,39 +20,10 @@ namespace WebApplication1.Controllers
         public IOrderedQueryable<Tracks> LoadSaved()
         {
             var savedtracks = (from t in _context.tracks
-                               join s in _context.savedTracks on t.TrackId equals s.TrackId
-                               where (s.UserId == Helper.user.UserID)
+                               join s in _context.savedTracks on t.TrackId equals s.Track.TrackId
+                               where (s.User.UserID == Helper.user.UserID)
                                select t).OrderByDescending(t => t);
             return savedtracks;
-        }
-        public void updateResentlyPlayed(int id)
-        {
-            if (Helper.user != null)
-            {
-                var played = (from p in _context.resentlyPlayeds
-                              where (p.UserId == Helper.user.UserID)
-                              select p).ToList();
-
-                ResentlyPlayed resentlyPlayed = new ResentlyPlayed()
-                {
-                    TrackId = id,
-                    UserId = Helper.user.UserID
-                };
-                _context.resentlyPlayeds.Add(resentlyPlayed);
-                _context.SaveChanges();
-
-                if (played != null)
-                {
-                    foreach (var item in played)
-                    {
-                        if (item.TrackId == resentlyPlayed.TrackId)
-                        {
-                            _context.resentlyPlayeds.Remove(item);
-                            _context.SaveChanges();
-                        }
-                    }
-                }
-            }
         }
         public IActionResult Saved()
         {
@@ -64,7 +35,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> UnSaved(int id)
         {
             Helper.player = "";
-            var savedtrack = _context.savedTracks.FirstOrDefault(s => s.TrackId == id);
+            var savedtrack = _context.savedTracks.FirstOrDefault(s => s.Track.TrackId == id);
 
             if (savedtrack != null)
             {
@@ -80,6 +51,7 @@ namespace WebApplication1.Controllers
             var track = await _context.tracks.FindAsync(id);
 
             await _helper.IncrementListen(id);
+            await _helper.updateResentlyPlayed(id);
 
             return View("Saved", LoadSaved());
         }
@@ -110,7 +82,7 @@ namespace WebApplication1.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                savedtracks = (IOrderedQueryable<Tracks>)savedtracks.Where(s => s.Artist.Contains(searchString) || s.TrackName.Contains(searchString));
+                savedtracks = (IOrderedQueryable<Tracks>)savedtracks.Where(s => s.Artist.ArtistName.Contains(searchString) || s.TrackName.Contains(searchString));
             }
 
             Helper.player = "";

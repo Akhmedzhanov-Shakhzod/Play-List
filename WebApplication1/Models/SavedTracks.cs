@@ -7,8 +7,8 @@ namespace WebApplication1.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public Users User { get; set; }
         [Required]
-        public int TrackId { get; set; }
+        public Tracks Track { get; set; }
     }
 }

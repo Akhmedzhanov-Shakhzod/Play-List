@@ -26,41 +26,13 @@ namespace WebApplication1.Controllers
             if (Helper.user != null)
             {
                 tracks[1] = (from t in _context.tracks
-                             join rp in _context.resentlyPlayeds.OrderByDescending(rp => rp.Id) on t.TrackId equals rp.TrackId
-                             where (rp.UserId == Helper.user.UserID)
+                             join rp in _context.resentlyPlayeds.OrderByDescending(rp => rp) on t.TrackId equals rp.Track.TrackId
+                             where (rp.User.UserID == Helper.user.UserID)
                              select t).Take(4);
             }
             return tracks;
         }
-        public void updateResentlyPlayed(int id)
-        {
-            if (Helper.user != null)
-            {
-                var played = (from p in _context.resentlyPlayeds
-                              where (p.UserId == Helper.user.UserID)
-                              select p).ToList();
-
-                ResentlyPlayed resentlyPlayed = new ResentlyPlayed()
-                {
-                    TrackId = id,
-                    UserId = Helper.user.UserID
-                };
-                _context.resentlyPlayeds.Add(resentlyPlayed);
-                _context.SaveChanges();
-
-                if (played != null)
-                {
-                    foreach (var item in played)
-                    {
-                        if (item.TrackId == resentlyPlayed.TrackId)
-                        {
-                            _context.resentlyPlayeds.Remove(item);
-                            _context.SaveChanges();
-                        }
-                    }
-                }
-            }
-        }
+        
         public IActionResult Index()
         {
             Helper.player = "";
@@ -74,7 +46,7 @@ namespace WebApplication1.Controllers
 
             await _helper.IncrementListen(id);
 
-            updateResentlyPlayed(id);
+            await _helper.updateResentlyPlayed(id);
 
             return View("Main", LoadMain());
         }

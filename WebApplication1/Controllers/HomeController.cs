@@ -17,6 +17,18 @@ namespace WebApplication1.Controllers
 
             _helper = new Helper(_context);
             Helper.playLists = _helper.PlayLists();
+
+
+            var genre = new Genres( "Default");
+
+            var artist = new Artists( "Artist");
+
+            _context.genres.Add(genre);
+            _context.SaveChanges();
+
+            _context.artists.Add(artist);
+            _context.SaveChanges();
+
         }
 
         public static string hashPassword(string password)
@@ -28,9 +40,9 @@ namespace WebApplication1.Controllers
         }
         public IQueryable<Tracks> LoadIndex()
         {
-            var tracks = from t in _context.tracks
-                         select t;
-            tracks = tracks.OrderByDescending(t => t);
+            var tracks = from u in _context.tracks
+                         select u;
+            tracks = tracks.OrderByDescending(u => u);
             return tracks;
         }
         public IQueryable<Tracks>[] LoadMain()
@@ -42,9 +54,9 @@ namespace WebApplication1.Controllers
             if (Helper.user != null)
             {
                 tracks[1] = (from t in _context.tracks
-                             join p in _context.resentlyPlayeds on t.TrackId equals p.TrackId
-                             where (p.UserId == Helper.user.UserID)
-                             select t).OrderByDescending(t => t).Take(4);
+                             join rp in _context.resentlyPlayeds.OrderByDescending(rp => rp) on t.TrackId equals rp.Track.TrackId
+                             where (rp.User.UserID == Helper.user.UserID)
+                             select t).Take(4);
             }
 
             return tracks;
@@ -54,35 +66,7 @@ namespace WebApplication1.Controllers
         {
             return _context.users.Select(u => u).OrderByDescending(u => u.UserName);
         }
-        public void updateResentlyPlayed(int id)
-        {
-            if (Helper.user != null)
-            {
-                var played = (from p in _context.resentlyPlayeds
-                              where (p.UserId == Helper.user.UserID)
-                              select p).ToList();
-
-                ResentlyPlayed resentlyPlayed = new ResentlyPlayed()
-                {
-                    TrackId = id,
-                    UserId = Helper.user.UserID
-                };
-                _context.resentlyPlayeds.Add(resentlyPlayed);
-                _context.SaveChanges();
-
-                if (played != null)
-                {
-                    foreach (var item in played)
-                    {
-                        if (item.TrackId == resentlyPlayed.TrackId)
-                        {
-                            _context.resentlyPlayeds.Remove(item);
-                            _context.SaveChanges();
-                        }
-                    }
-                }
-            }
-        }
+        
         public IActionResult Login()
         {
             return View();
@@ -188,7 +172,7 @@ namespace WebApplication1.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                tracks = tracks.Where(s => s.Artist.Contains(searchString) || s.TrackName.Contains(searchString));
+                tracks = tracks.Where(s => s.Artist.ArtistName.Contains(searchString) || s.TrackName.Contains(searchString));
             }
 
             Helper.player = "";
@@ -204,23 +188,24 @@ namespace WebApplication1.Controllers
 
             await _helper.IncrementListen(id);
 
-            updateResentlyPlayed(id);
+            await _helper.updateResentlyPlayed(id);
 
             return View("Index", LoadIndex());
         }
 
         public async Task<IActionResult> Saved(int id)
         {
-            var savedtrack = _context.savedTracks.FirstOrDefault(s => s.TrackId == id);
+            var savedtrack = _context.savedTracks.FirstOrDefault(s => s.Track.TrackId == id);
 
             if (savedtrack != null)
             {
-                if(savedtrack.UserId == Helper.user.UserID) return View("Index", LoadIndex());
+                if(savedtrack.User.UserID == Helper.user.UserID) return View("Index", LoadIndex());
             }
+
             SavedTracks saved = new SavedTracks()
             {
-                UserId = Helper.user.UserID,
-                TrackId = id
+                User = (Users)_context.users.Where(u => u.UserID == Helper.user.UserID),
+                Track = (Tracks)_context.tracks.Where(t => t.TrackId == id)
             };
             _context.savedTracks.Add(saved);
             await _context.SaveChangesAsync();

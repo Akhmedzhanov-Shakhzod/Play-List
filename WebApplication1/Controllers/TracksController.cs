@@ -42,6 +42,10 @@ namespace WebApplication1.Controllers
                 ////
                 ////
 
+                var genre = _context.genres.FirstOrDefault();
+
+                var artist = _context.artists.FirstOrDefault(); 
+
                 // путь к папке Files
                 string pathaudio = "wwwroot/files/tracks/" + files[0].FileName;
                 // сохраняем файл в папку Files в каталоге wwwroot
@@ -53,7 +57,10 @@ namespace WebApplication1.Controllers
                 Tracks track = new Tracks();
 
                 track.TrackName = files[0].FileName;
-                track.Artist = Request.Form["Artist"];
+                track.Artist = artist;
+
+                track.Genre = genre;
+
                 track.Listens = 0;
                 track.Audio = pathaudio;
 

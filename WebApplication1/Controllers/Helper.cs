@@ -55,5 +55,35 @@ namespace WebApplication1.Controllers
             await _context.SaveChangesAsync();
         }
 
+        public async Task updateResentlyPlayed(int id)
+        {
+            if (Helper.user != null)
+            {
+                var played = (from rp in _context.resentlyPlayeds
+                              where (rp.User.UserID == Helper.user.UserID)
+                              select rp).ToList();
+
+                ResentlyPlayed resentlyPlayed = new ResentlyPlayed()
+                {
+                    Track = _context.tracks.Where(t => t.TrackId == id).ToList()[0],
+                    User = _context.users.Where(u => u.UserID == Helper.user.UserID).ToList()[0]
+                };
+                _context.resentlyPlayeds.Add(resentlyPlayed);
+                await _context.SaveChangesAsync();
+
+                if (played != null)
+                {
+                    foreach (var item in played)
+                    {
+                        if (item.Track.TrackId == resentlyPlayed.Track.TrackId)
+                        {
+                            _context.resentlyPlayeds.Remove(item);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -9,7 +9,9 @@ namespace WebApplication1.Models
         [Required]
         public string TrackName { get; set; }
         [Required]
-        public string Artist { get; set; }
+        public Artists Artist { get; set; }
+        [Required]
+        public Genres Genre { get; set; } 
         [Required]
         public int Listens { get; set; }
         [Required]

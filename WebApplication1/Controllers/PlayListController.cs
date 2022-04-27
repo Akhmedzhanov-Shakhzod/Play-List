@@ -39,9 +39,9 @@ namespace WebApplication1.Controllers
 
             var tracks = from tp in _context.tracksInPlayList
                          join t in _context.tracks
-                         on tp.TrackId equals t.TrackId
+                         on tp.Track.TrackId equals t.TrackId
                          join p in _context.playLists
-                         on tp.PlayListId equals p.Id
+                         on tp.PlayList.Id equals p.Id
                          where p.Author == Helper.user.UserName && p.Id == id
                          select t;
 
@@ -49,35 +49,6 @@ namespace WebApplication1.Controllers
             return tracksInPlayList;
         }
 
-        public void updateResentlyPlayed(int id)
-        {
-            if (Helper.user != null)
-            {
-                var played = (from p in _context.resentlyPlayeds
-                              where (p.UserId == Helper.user.UserID)
-                              select p).ToList();
-
-                ResentlyPlayed resentlyPlayed = new ResentlyPlayed()
-                {
-                    TrackId = id,
-                    UserId = Helper.user.UserID
-                };
-                _context.resentlyPlayeds.Add(resentlyPlayed);
-                _context.SaveChanges();
-
-                if (played != null)
-                {
-                    foreach (var item in played)
-                    {
-                        if (item.TrackId == resentlyPlayed.TrackId)
-                        {
-                            _context.resentlyPlayeds.Remove(item);
-                            _context.SaveChanges();
-                        }
-                    }
-                }
-            }
-        }
         public IActionResult Index()
         {
             return View("Index",LoadIndex());
@@ -127,8 +98,8 @@ namespace WebApplication1.Controllers
             {
                 var playlistWithTracks = new TracksInPlayList()
                 {
-                    TrackId = trackid,
-                    PlayListId = playList.Id
+                    Track = (Tracks)_context.tracks.Single(t => t.TrackId == trackid),
+                    PlayList = (PlayList)_context.playLists.Single(p => p.Id == playList.Id)
                 };
                 _context.tracksInPlayList.Add(playlistWithTracks);
                 await _context.SaveChangesAsync();
@@ -171,7 +142,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> Delete(int id,int playlistid)
         {
 
-            var track = _context.tracksInPlayList.FirstOrDefault(t => t.PlayListId == playlistid && t.TrackId == id);
+            var track = _context.tracksInPlayList.FirstOrDefault(t => t.PlayList.Id == playlistid && t.Track.TrackId == id);
 
             if (track != null)
             {
@@ -200,7 +171,7 @@ namespace WebApplication1.Controllers
 
             await _helper.IncrementListen(trackid);
 
-            updateResentlyPlayed(trackid);
+            await _helper.updateResentlyPlayed(trackid);
 
             return View("Edit", LoadEditor(playlistid));
         }
