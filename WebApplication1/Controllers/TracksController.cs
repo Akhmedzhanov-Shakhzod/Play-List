@@ -17,11 +17,18 @@ namespace WebApplication1.Controllers
             _helper = new Helper(_context);
             Helper.playLists = _helper.PlayLists();
         }
-
-        public IQueryable<Tracks> LoadHomeIndex()
+        public (IQueryable<Artists>, IQueryable<Genres>) LoadForFilter()
         {
-            return (from u in _context.tracks
-                    select u).OrderByDescending(t => t);
+            var artists = from a in _context.artists select a;
+            var genres = from g in _context.genres select g;
+
+            return (artists, genres);
+        }
+        public (IQueryable<Tracks>, (IQueryable<Artists>, IQueryable<Genres>)) LoadHomeIndex()
+        {
+            var tracks = (from t in _context.tracks select t).OrderByDescending(t => t);
+
+            return (tracks, LoadForFilter());
         }
 
         public (List<Artists>,List<Genres>) LoadAddTrack()
