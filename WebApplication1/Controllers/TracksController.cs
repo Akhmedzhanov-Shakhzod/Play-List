@@ -43,15 +43,16 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                ////
-                ////
-                var trackndb = await _context.tracks.FirstOrDefaultAsync(u => u.Audio == "/files/tracks/" + files[0].FileName);
-                if(trackndb != null) return View("AddTrack", (Helper.Errors.TrackAlreadyExist,LoadAddTrack()));
-                ////
-                ////
 
                 int Artistid = Convert.ToInt32(Request.Form["Artist"]);
                 int Genreid = Convert.ToInt32(Request.Form["Genre"]);
+
+                ////
+                ////
+                var trackndb = await _context.tracks.FirstOrDefaultAsync(u => u.Audio == "/files/tracks/" + files[0].FileName && u.Artist.ArtistId == Artistid);
+                if(trackndb != null) return View("AddTrack", (Helper.Errors.TrackAlreadyExist,LoadAddTrack()));
+                ////
+                ////
 
                 var Artist = await _context.artists.Where(a => a.ArtistId == Artistid).FirstAsync();
                 var Genre = await _context.genres.Where(a => a.GenreId == Genreid).FirstAsync();

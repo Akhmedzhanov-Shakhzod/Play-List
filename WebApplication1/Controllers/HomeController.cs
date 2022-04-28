@@ -17,18 +17,6 @@ namespace WebApplication1.Controllers
 
             _helper = new Helper(_context);
             Helper.playLists = _helper.PlayLists();
-
-
-            //var genre = new Genres( "Default");
-
-            //var artist = new Artists( "Artist");
-
-            //_context.genres.Add(genre);
-            //_context.SaveChanges();
-
-            //_context.artists.Add(artist);
-            //_context.SaveChanges();
-
         }
 
         public static string hashPassword(string password)
@@ -67,12 +55,6 @@ namespace WebApplication1.Controllers
 
             return tracks;
         }
-
-        public IQueryable<Users> LoadUsers()
-        {
-            return _context.users.Select(u => u).OrderByDescending(u => u.UserName);
-        }
-        
         public IActionResult Login()
         {
             return View();
@@ -240,10 +222,7 @@ namespace WebApplication1.Controllers
         {
             return View("Views/Library/Index.cshtml");
         }
-        public IActionResult Users()
-        {
-            return View("Users",LoadUsers());
-        }
+
         public IActionResult Privacy()
         {
             return View();

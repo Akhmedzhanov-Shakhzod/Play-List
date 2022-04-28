@@ -470,8 +470,6 @@ input.uplod-btn {
 li.user {
     width: 100%;
     list-style-type: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .grid-list {
@@ -502,3 +500,53 @@ li.user {
 button.btn-marginleft {
     margin-left: 50px;
 }
+
+
+
+/*************************** https://html5css.ru/howto/howto_css_dropdown.php ****************************/
+
+/* Dropdown Button */
+.dropbtn-users {
+    cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown-users {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content-users {
+    display: none;
+    position: absolute;
+    background-color: #232330;
+    min-width: 700px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content-users a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content-users a:hover {
+    background-color: #0e0c0c;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown-users:hover .dropdown-content-users {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown-users:hover .dropbtn-users {
+    background-color: #232324;
+}
+
+/***************************************************************************************/

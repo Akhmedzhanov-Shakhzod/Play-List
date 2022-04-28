@@ -1,0 +1,53 @@
+﻿
+
+@using WebApplication1.Controllers
+@using WebApplication1.Models
+
+@model (List<Users>,List<IQueryable<PlayList>>)
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1 class="paddingtop container">All registered users in this platform : </h1>
+
+<ul class="paddingtop container">
+    <li class="user grid-list">
+        <p>
+            User name :
+        </p>
+        <p>
+            Password :
+        </p>
+        <p>
+            Access level :
+        </p>
+    </li>
+
+    @for (var i = 0; i < @Model.Item1.Count(); i++)
+    {
+        @if (@Model.Item1[i].UserID == Helper.user?.UserID) continue;
+        <li class="user grid-list">
+            <div class="dropdown-users">
+                <p class="dropbtn-users">@Model.Item1[i].UserName</p>
+                <div class="dropdown-content-users">
+                    @foreach(var playlist in @Model.Item2[i])
+                    {
+                     <a asp-controller="Users" asp-action="UserPlaylist" asp-route-playlistId = "@playlist.Id">@playlist.Name</a>   
+                    }
+                </div>
+            </div>
+
+            <div>
+                @Model.Item1[i].Password
+            </div>
+            
+            <div>
+                @Model.Item1[i].UserAccessLevel
+            </div>
+        </li>
+    }
+</ul>
+
+
+

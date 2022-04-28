@@ -11,7 +11,7 @@ namespace WebApplication1.Controllers
         {
             public const string UserNotExist = "This user does not exist";
             public const string PassworInCorrect = "Incorrect password";
-            public static string TrackAlreadyExist = "This track already exists";
+            public static string TrackAlreadyExist = "This track already exists in this artist";
             public static string PlayListAlreadyExist = "This playlist already exists";
         }   
 
