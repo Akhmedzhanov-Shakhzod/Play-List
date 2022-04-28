@@ -219,16 +219,6 @@ body {
 
 /************** https://www.sliderrevolution.com/resources/bootstrap-login-form/ *******************/
 
-.saved {
-    display: inline-block;
-    cursor: pointer;
-}
-.saved-div {
-    width:112%;
-    margin-left: -6%;
-    display:flex;
-    justify-content:space-between;
-}
 
 .saved-margin {
     margin-left:100%;
