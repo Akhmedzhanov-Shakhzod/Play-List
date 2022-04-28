@@ -42,39 +42,40 @@
                     <div></div>
                     <div></div>
                     <div></div>
+                    <div></div>
                 }
                 else
                 {   
-                    <div>
-                        <a class="" asp-area="" asp-controller="Home" asp-action="Library">My library</a>
-                    </div>
-                    <div>
+                    <div></div>
                     @if(Helper.user?.UserAccessLevel == "admin")
                     {
-                        <a class="" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                    }
-                    </div>
-                    <div>
-                        <a class="" asp-area="" asp-controller="PlayList" asp-action="Index">Create playlist</a>
-                    </div>
-                    <div>
-                        <a class="" asp-area="" asp-controller="Saved" asp-action="Saved">Saved tracks</a>
-                    </div>
-                    
-                    <!-- ****************************************************************************** -->
                     <div>
                         <a class="" asp-area="" asp-controller="Artists" asp-action="Index">Artists</a>
                     </div>
                     <div>
                         <a class="" asp-area="" asp-controller="Genres" asp-action="Index">Genres</a>
                     </div>
+                    <div>
+                        <a class="" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                    </div>
+                    <div></div>
+                    }
+                    else
+                    {
+                    <div>
+                        <a class="" asp-area="" asp-controller="Home" asp-action="Library">My library</a>
+                    </div>
+                    <div>
+                        <a class="" asp-area="" asp-controller="PlayList" asp-action="Index">Create playlist</a>
+                    </div>
+                    <div>
+                        <a class="" asp-area="" asp-controller="Saved" asp-action="Saved">Saved tracks</a>
+                    </div>    
+                    }
+                    <hr class="w-75" />
                 }
             </div>
 
-            @if(Helper.user != null)
-            {
-                <hr class="w-75" />
-            }
             <div class="Fixed_Panel_PlayLists">
             @{
                 try

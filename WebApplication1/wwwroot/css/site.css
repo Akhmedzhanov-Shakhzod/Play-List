@@ -66,7 +66,7 @@ body {
 
 .Fixed_Panel_Menu {
     display: flex;
-    height: 35%;
+    height: 40%;
     flex-direction: column;
     justify-content: space-between;
 }
