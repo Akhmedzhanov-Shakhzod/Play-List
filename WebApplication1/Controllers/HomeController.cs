@@ -38,7 +38,7 @@ namespace WebApplication1.Controllers
             byte[] encrypte_bytes = sHA1.ComputeHash(passwordbytes);
             return Convert.ToBase64String(encrypte_bytes);
         }
-        public (IQueryable<Artists>, IQueryable<Genres>) LoadForIndex()
+        public (IQueryable<Artists>, IQueryable<Genres>) LoadForFilter()
         {
             var artists = from a in _context.artists select a;
             var genres = from g in _context.genres select g;
@@ -49,7 +49,7 @@ namespace WebApplication1.Controllers
         {
             var tracks = (from t in _context.tracks select t).OrderByDescending(t => t);
 
-            return (tracks,LoadForIndex());
+            return (tracks, LoadForFilter());
         }
         public IQueryable<Tracks>[] LoadMain()
         {
@@ -167,7 +167,7 @@ namespace WebApplication1.Controllers
                 break;
             }
             Helper.player = "";
-            return View("Index",(tracks,LoadForIndex()));
+            return View("Index",(tracks, LoadForFilter()));
         }
 
         public IActionResult Search(string searchString)
@@ -177,11 +177,11 @@ namespace WebApplication1.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                tracks = tracks.Where(s => s.Artist.ArtistName.Contains(searchString)|| s.Genre.GenreName.Contains(searchString) || s.TrackName.Contains(searchString));
+                tracks = tracks.Where(s => s.TrackName.Contains(searchString.Trim()));
             }
 
             Helper.player = "";
-            return View("Index", (tracks,LoadForIndex()));
+            return View("Index", (tracks, LoadForFilter()));
         }
 
         public async Task<IActionResult> Player(string scr,int id)

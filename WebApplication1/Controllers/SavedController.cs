@@ -17,12 +17,23 @@ namespace WebApplication1.Controllers
             Helper.playLists = _helper.PlayLists();
         }
 
-        public IOrderedQueryable<Tracks> LoadSaved()
+        public IQueryable<Tracks> LoadSavedTraks()
         {
             return (from t in _context.tracks
-                    join s in _context.savedTracks on t.TrackId equals s.Track.TrackId
-                    where (s.User.UserID == Helper.user.UserID)
-                    select t).OrderByDescending(t => t);
+             join s in _context.savedTracks on t.TrackId equals s.Track.TrackId
+             where (s.User.UserID == Helper.user.UserID)
+             select t).OrderByDescending(t => t);
+        }
+        public (IQueryable<Artists>, IQueryable<Genres>) LoadForFilter()
+        {
+            var artists = from a in _context.artists select a;
+            var genres = from g in _context.genres select g;
+
+            return (artists, genres);
+        }
+        public (IQueryable<Tracks>, (IQueryable<Artists>, IQueryable<Genres>)) LoadSaved()
+        {
+            return (LoadSavedTraks(), LoadForFilter());
         }
         public IActionResult Saved()
         {
@@ -55,37 +66,38 @@ namespace WebApplication1.Controllers
             return View("Saved", LoadSaved());
         }
 
-        public IActionResult OrderBy(string searchId)
+        public IActionResult Filter(int type)
         {
-            var savedtracks = LoadSaved();
-            switch (searchId)
+            int artistid = Convert.ToInt32(Request.Form["ArtistId"]);
+            int genreid = Convert.ToInt32(Request.Form["GenreId"]);
+
+            IQueryable<Tracks> savedtracks = LoadSavedTraks();
+
+            switch (type)
             {
-                case "1":
-                    savedtracks = savedtracks.OrderBy(u => u.TrackName);
+                case 1:
+                    savedtracks = savedtracks.Where(t => t.Artist.ArtistId == artistid);
                     break;
-                case "2":
-                    savedtracks = savedtracks.OrderBy(u => u.Artist);
-                    break;
-                case "3":
-                    savedtracks = savedtracks.OrderBy(u => u.Listens);
+                case 2:
+                    savedtracks = savedtracks.Where(t => t.Genre.GenreId == genreid);
                     break;
             }
             Helper.player = "";
-            return View("Saved", savedtracks);
+            return View("Saved", (savedtracks, LoadForFilter()));
         }
 
         public IActionResult Search(string searchString)
         {
 
-            var savedtracks = LoadSaved();
+            var savedtracks = LoadSavedTraks();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                savedtracks = (IOrderedQueryable<Tracks>)savedtracks.Where(s => s.Artist.ArtistName.Contains(searchString) || s.TrackName.Contains(searchString));
+                savedtracks = savedtracks.Where(s => s.TrackName.Contains(searchString.Trim()));
             }
 
             Helper.player = "";
-            return View("Saved", savedtracks);
+            return View("Saved", (savedtracks, LoadForFilter()));
         }
     }
 }

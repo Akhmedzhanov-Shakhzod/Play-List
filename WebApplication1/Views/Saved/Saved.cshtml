@@ -2,7 +2,7 @@
 @using WebApplication1.Controllers
 @using WebApplication1.Models
 
-@model IQueryable<Tracks>
+@model (IQueryable<Tracks>,(IQueryable<Artists>,IQueryable<Genres>))
 
 
 @{
@@ -12,7 +12,7 @@
 <div class="paddingtop">
     <h1 class="center">Saved Tracks</h1>
 
-    @if(@Model != null)
+    @if(@Model.Item1 != null)
     {
         <div id="Player">
             <audio id="audioPlayer" controls autoplay loop preload="metadata">
@@ -21,19 +21,29 @@
             </audio>
         </div>
 
-
         <div class="search-menu">
             <div>
-            <form  method="post">
-                <select name="searchId">
-                    <option value="1">Track name</option>
-                    <option value="2">Artist</option>
-                    <option value="3">Most popular</option>
-                </select>
-                <input asp-area="" asp-controller="Saved" asp-action="OrderBy" type="submit" class="btn btn-primary" value="order by"/>
-            </form>
+                <form  method="post">
+                    <select name="ArtistId">
+                        @foreach(var artist in @Model.Item2.Item1)
+                        {
+                            <option value="@artist.ArtistId">@artist.ArtistName</option>
+                        }
+                    </select>
+                    <input asp-area="" asp-controller="Saved" asp-action="Filter" asp-route-type="1" type="submit" class="btn btn-primary" value="filter by"/>
+               </form>
             </div>
-
+            <div>
+                <form  method="post">
+                    <select name="GenreId">
+                        @foreach(var genre in @Model.Item2.Item2)
+                        {
+                            <option value="@genre.GenreId">@genre.GenreName</option>
+                        }
+                    </select>
+                    <input asp-area="" asp-controller="Saved" asp-action="Filter" asp-route-type="2" type="submit" class="btn btn-primary" value="filter by"/>
+               </form>
+            </div>
             <div>
                 <form  method="post">
                     <input name="searchString" id="elastic" type="text" placeholder="search"/>
@@ -46,7 +56,7 @@
         <!-- jade: compressed-->
 
         <ul class="audio-players">
-        @foreach (var @track in @Model)
+        @foreach (var @track in @Model.Item1)
         {
         <li class="elastic">
             @if(Helper.user != null)
