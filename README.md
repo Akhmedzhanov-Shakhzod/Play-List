@@ -20,6 +20,11 @@
 #### In your server created database ___PlayList___ (if you not changed the name in connection string)
 #### Build and Run (F5 or Ctrl+F5)
 #### Yeah now you can enjoy using this app ___"PlayList"___
+
+### Enter the keyword ____"ordinary"___ to register as an administrator
+
+![image](https://user-images.githubusercontent.com/80168982/165889398-13babe59-e5c5-4de0-80d3-a65357aada4b.png)
+
 ---
 ## Database diagram:
 
