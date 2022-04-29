@@ -1,7 +1,7 @@
 ﻿@using WebApplication1.Controllers
 @using WebApplication1.Models
 
-@model (string,(List<Artists>,List<Genres>))
+@model (string,(IQueryable<Artists>, IQueryable<Genres>))
 
 @{
     ViewData["Title"] = "Add Track";
@@ -17,17 +17,17 @@
 
     <label>Artist</label>
     <select class="w-25" name="Artist">
-        @for(var i = 0; i < @Model.Item2.Item1.Count();i++)
+        @foreach(var artist in @Model.Item2.Item1)
         {
-            <option value="@Model.Item2.Item1[@i].ArtistId">@Model.Item2.Item1[@i].ArtistName</option>
+            <option value="@artist.ArtistId">@artist.ArtistName</option>
         }
     </select>
     
     <label>Genre</label>
     <select class="w-25" name="Genre">
-        @for(var i = 0; i < @Model.Item2.Item2.Count();i++)
+        @foreach(var genre in @Model.Item2.Item2)
         {
-            <option value="@Model.Item2.Item2[@i].GenreId">@Model.Item2.Item2[@i].GenreName</option>
+            <option value="@genre.GenreId">@genre.GenreName</option>
         }
     </select>
 

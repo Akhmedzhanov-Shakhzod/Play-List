@@ -19,8 +19,8 @@ namespace WebApplication1.Controllers
         }
         public (IQueryable<Artists>, IQueryable<Genres>) LoadForFilter()
         {
-            var artists = from a in _context.artists select a;
-            var genres = from g in _context.genres select g;
+            var artists = (from a in _context.artists select a).OrderBy(a => a.ArtistName);
+            var genres = (from g in _context.genres select g).OrderBy(g => g.GenreName);
 
             return (artists, genres);
         }
@@ -31,18 +31,9 @@ namespace WebApplication1.Controllers
             return (tracks, LoadForFilter());
         }
 
-        public (List<Artists>,List<Genres>) LoadAddTrack()
-        {
-            var artists = (from a in _context.artists
-                          select a).ToList();
-            var genres = (from g in _context.genres
-                          select g).ToList();
-            return (artists, genres);
-        }
-
         public IActionResult Index()
         {
-            return View("AddTrack",("",LoadAddTrack()));
+            return View("AddTrack",("",LoadForFilter()));
         }
 
         [HttpPost("FileUpload")]
@@ -57,7 +48,7 @@ namespace WebApplication1.Controllers
                 ////
                 ////
                 var trackndb = await _context.tracks.FirstOrDefaultAsync(u => u.Audio == "/files/tracks/" + files[0].FileName && u.Artist.ArtistId == Artistid);
-                if(trackndb != null) return View("AddTrack", (Helper.Errors.TrackAlreadyExist,LoadAddTrack()));
+                if(trackndb != null) return View("AddTrack", (Helper.Errors.TrackAlreadyExist,LoadForFilter()));
                 ////
                 ////
 

@@ -28,8 +28,8 @@ namespace WebApplication1.Controllers
         }
         public (IQueryable<Artists>, IQueryable<Genres>) LoadForFilter()
         {
-            var artists = from a in _context.artists select a;
-            var genres = from g in _context.genres select g;
+            var artists = (from a in _context.artists select a).OrderBy(a => a.ArtistName);
+            var genres = (from g in _context.genres select g).OrderBy(g => g.GenreName);
 
             return (artists, genres);
         }
